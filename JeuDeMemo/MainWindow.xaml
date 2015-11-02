@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JeuDeMemo"
         mc:Ignorable="d"
-        Title="Jeu de mémoire" Height="600" Width="800" ResizeMode="NoResize">
-    <Grid>
+        Title="Jeu de mémoire" Height="662.874" Width="1604.79" ResizeMode="NoResize">
+    <Grid Margin="0,0,4,-28">
 
     </Grid>
 </Window>
