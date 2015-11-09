@@ -13,14 +13,14 @@
             <Label x:Name="label1" Content="Nombre de joueurs:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label2" Content="Thème:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label3" Content="Débute la partie:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <CheckBox x:Name="checkBox" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="checkBox_Copy" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438"/>
-            <CheckBox x:Name="checkBox_Copy1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="checkBox_Copy2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="checkBox_Copy3" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
-            <CheckBox x:Name="checkBox_Copy4" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
-            <CheckBox x:Name="checkBox_Copy5" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
-            <CheckBox x:Name="checkBox_Copy6" Content="" HorizontalAlignment="Left" Margin="247,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
+            <CheckBox x:Name="chk8x8" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20"/>
+            <CheckBox x:Name="chk9x9" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438"/>
+            <CheckBox x:Name="chkJoueur1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20"/>
+            <CheckBox x:Name="chkJoueur2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20"/>
+            <CheckBox x:Name="chkFruits" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
+            <CheckBox x:Name="chkVoitures" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
+            <CheckBox x:Name="chkDebut1" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
+            <CheckBox x:Name="chkDebut2" Content="" HorizontalAlignment="Left" Margin="247,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
 
             <Label x:Name="label4" Content="8x8" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label4_Copy" Content="9x9" HorizontalAlignment="Left" Margin="206,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.355,0.538" FontFamily="Narkisim"/>
@@ -36,8 +36,8 @@
             <Label x:Name="label6_Copy1" Content="Joueur 1" Margin="21,33,159,27" FontFamily="Narkisim"/>
             <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667"/>
             <Label x:Name="label7_Copy1" Content="Joueur 2" Margin="158,33,22,27" FontFamily="Narkisim"/>
-            <TextBox x:Name="textBox" TextWrapping="Wrap" Text="Pointage" Margin="21,59,159,12" FontFamily="Narkisim"/>
-            <TextBox x:Name="textBox_Copy" TextWrapping="Wrap" Text="Pointage" Margin="158,59,22,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Text="Pointage" Margin="21,59,159,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Text="Pointage" Margin="158,59,22,12" FontFamily="Narkisim"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="503" Margin="10,176,0,0" VerticalAlignment="Top" Width="577">
             <Label HorizontalContentAlignment="Center" x:Name="label6" Content="Grille de jeu&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="577"/>
