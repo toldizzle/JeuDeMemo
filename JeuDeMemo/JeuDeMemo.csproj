@@ -112,67 +112,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Cartes\HLion.png" />
-    <Resource Include="Images\Fruits\f1.jpg" />
-    <Resource Include="Images\Fruits\f10.jpg" />
-    <Resource Include="Images\Fruits\f11.jpg" />
-    <Resource Include="Images\Fruits\f12.jpg" />
-    <Resource Include="Images\Fruits\f13.jpg" />
-    <Resource Include="Images\Fruits\f14.jpg" />
-    <Resource Include="Images\Fruits\f15.jpg" />
-    <Resource Include="Images\Fruits\f16.jpg" />
-    <Resource Include="Images\Fruits\f17.jpg" />
-    <Resource Include="Images\Fruits\f18.jpg" />
-    <Resource Include="Images\Fruits\f19.jpg" />
-    <Resource Include="Images\Fruits\f2.jpg" />
-    <Resource Include="Images\Fruits\f20.jpg" />
-    <Resource Include="Images\Fruits\f21.jpg" />
-    <Resource Include="Images\Fruits\f22.jpg" />
-    <Resource Include="Images\Fruits\f23.jpg" />
-    <Resource Include="Images\Fruits\f24.jpg" />
-    <Resource Include="Images\Fruits\f25.jpg" />
-    <Resource Include="Images\Fruits\f26.jpg" />
-    <Resource Include="Images\Fruits\f27.jpg" />
-    <Resource Include="Images\Fruits\f28.jpg" />
-    <Resource Include="Images\Fruits\f29.jpg" />
-    <Resource Include="Images\Fruits\f3.jpg" />
-    <Resource Include="Images\Fruits\f4.jpg" />
-    <Resource Include="Images\Fruits\f5.jpg" />
-    <Resource Include="Images\Fruits\f6.jpg" />
-    <Resource Include="Images\Fruits\f7.jpg" />
-    <Resource Include="Images\Fruits\f8.jpg" />
-    <Resource Include="Images\Fruits\f9.jpg" />
-    <Resource Include="Images\Voitures\v1.jpg" />
-    <Resource Include="Images\Voitures\v10.jpg" />
-    <Resource Include="Images\Voitures\v11.jpg" />
-    <Resource Include="Images\Voitures\v12.jpg" />
-    <Resource Include="Images\Voitures\v13.jpg" />
-    <Resource Include="Images\Voitures\v14.jpg" />
-    <Resource Include="Images\Voitures\v15.jpg" />
-    <Resource Include="Images\Voitures\v16.jpg" />
-    <Resource Include="Images\Voitures\v17.jpg" />
-    <Resource Include="Images\Voitures\v18.jpg" />
-    <Resource Include="Images\Voitures\v19.jpg" />
-    <Resource Include="Images\Voitures\v2.jpg" />
-    <Resource Include="Images\Voitures\v20.jpg" />
-    <Resource Include="Images\Voitures\v21.jpg" />
-    <Resource Include="Images\Voitures\v22.jpg" />
-    <Resource Include="Images\Voitures\v23.jpg" />
-    <Resource Include="Images\Voitures\v24.jpg" />
-    <Resource Include="Images\Voitures\v25.jpg" />
-    <Resource Include="Images\Voitures\v26.jpg" />
-    <Resource Include="Images\Voitures\v27.jpg" />
-    <Resource Include="Images\Voitures\v28.jpg" />
-    <Resource Include="Images\Voitures\v29.jpg" />
-    <Resource Include="Images\Voitures\v3.jpg" />
-    <Resource Include="Images\Voitures\v4.jpg" />
-    <Resource Include="Images\Voitures\v5.jpg" />
-    <Resource Include="Images\Voitures\v6.jpg" />
-    <Resource Include="Images\Voitures\v7.jpg" />
-    <Resource Include="Images\Voitures\v8.jpg" />
-    <Resource Include="Images\Voitures\v9.jpg" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

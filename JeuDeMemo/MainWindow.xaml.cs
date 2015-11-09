@@ -73,6 +73,7 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
 
