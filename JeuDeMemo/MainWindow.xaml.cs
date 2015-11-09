@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace JeuDeMemo
@@ -23,7 +24,12 @@ namespace JeuDeMemo
         public MainWindow()
         {
             InitializeComponent();
+
+
         }
+
+
+
 
         private void chk8x8_Checked(object sender, RoutedEventArgs e)
         {
@@ -63,6 +69,45 @@ namespace JeuDeMemo
         private void chkDebut1_Checked(object sender, RoutedEventArgs e)
         {
             chkDebut2.IsChecked = false;
+        }
+
+        private void btnDemarrer_Click(object sender, RoutedEventArgs e)
+        {
+            Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            var brush = new ImageBrush();
+            brush.ImageSource = temp;
+
+            byte bGrandeur = 0;
+            if (chk8x8.IsChecked == true)
+            {
+                bGrandeur = 8;
+            }
+            else if (chk9x9.IsChecked == true)
+            {
+                bGrandeur = 9;
+            }
+            for (int x = 1; x <= bGrandeur; x++)
+            {
+                for (int y = 1; y <= bGrandeur; y++)
+                {
+                    string sNom = "btn" + x + y;
+                    Button button = new Button()
+                    {
+                        Name = sNom,
+                        Tag = sNom,
+                        Background = brush
+                    };
+                    button.Click += new RoutedEventHandler(button_Click);
+                    this.Jeu.Children.Add(button);
+                }
+            }
+        }
+        void button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(string.Format("{0}", (sender as Button).Tag));
         }
     }
 }
