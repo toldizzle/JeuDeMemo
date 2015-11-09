@@ -13,13 +13,13 @@
             <Label x:Name="label1" Content="Nombre de joueurs:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label2" Content="Thème:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label3" Content="Débute la partie:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <CheckBox x:Name="chk8x8" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="chk9x9" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438"/>
-            <CheckBox x:Name="chkJoueur1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="chkJoueur2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20"/>
-            <CheckBox x:Name="chkFruits" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
-            <CheckBox x:Name="chkVoitures" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
-            <CheckBox x:Name="chkDebut1" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
+            <CheckBox x:Name="chk8x8" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20" Checked="chk8x8_Checked"/>
+            <CheckBox x:Name="chk9x9" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438" Checked="chk9x9_Checked"/>
+            <CheckBox x:Name="chkJoueur1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur1_Checked"/>
+            <CheckBox x:Name="chkJoueur2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur2_Checked"/>
+            <CheckBox x:Name="chkFruits" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5"/>
+            <CheckBox x:Name="chkVoitures" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438" Checked="chkVoitures_Checked"/>
+            <CheckBox x:Name="chkDebut1" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5"/>
             <CheckBox x:Name="chkDebut2" Content="" HorizontalAlignment="Left" Margin="247,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438"/>
 
             <Label x:Name="label4" Content="8x8" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
