@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Jeu de mémoire" Height="723.593" Width="583.311" ResizeMode="NoResize">
     <Grid Margin="0,0,4,-28">
-        <Grid HorizontalAlignment="Left" Height="138" Margin="10,10,0,0" VerticalAlignment="Top" Width="299" Background="#00000000">
+        <Grid HorizontalAlignment="Left" Height="138" Margin="10,10,0,0" VerticalAlignment="Top" Width="299" Background="#00000000" Name="Options">
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="0,-2,0,0" VerticalAlignment="Top" Width="299"/>
             <Label x:Name="label" Content="Format de Grille:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
             <Label x:Name="label1" Content="Nombre de joueurs:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
@@ -43,8 +43,9 @@
             <Label HorizontalContentAlignment="Center" x:Name="label6" Content="Grille de jeu&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="516"/>
         </Grid>
         <UniformGrid Name="Jeu" Margin="0,212,0,28">
-            
+
         </UniformGrid>
         <Button x:Name="btnDemarrer" Content="Démarrer" HorizontalAlignment="Left" Margin="328,126,0,0" VerticalAlignment="Top" Width="75" Click="btnDemarrer_Click"/>
+        <Button x:Name="btnRecommencer" Content="Recommencer" HorizontalAlignment="Left" Margin="483,126,0,0" VerticalAlignment="Top" Width="86" Click="btnRecommencer_Click"/>
     </Grid>
 </Window>
