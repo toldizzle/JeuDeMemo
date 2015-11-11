@@ -93,6 +93,7 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
+            int iTag = 0;
             Options.IsEnabled = false;
             btnDemarrer.IsEnabled = false;
             Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
@@ -118,11 +119,12 @@ namespace JeuDeMemo
                     Button button = new Button()
                     {
                         Name = "btn" + sNom,
-                        Tag = sNom,
+                        Tag = iTag,
                         Background = brush
                     };
                     button.Click += new RoutedEventHandler(button_Click);
                     this.Jeu.Children.Add(button);
+                    iTag++;
                 }
             }
             JeuMemoire();
@@ -141,7 +143,7 @@ namespace JeuDeMemo
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
             }
-            //Créer une méthode pour recevoir un uri.
+            //Change l'image
             Uri resourceUri = new Uri(RecevoirInfoBouton(iTag), UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
 
@@ -149,7 +151,6 @@ namespace JeuDeMemo
             var brush = new ImageBrush();
             brush.ImageSource = temp;
             (sender as Button).Background = brush;
-            //MessageBox.Show(string.Format("{0}", (sender as Button).Tag));
         }
 
         private void btnRecommencer_Click(object sender, RoutedEventArgs e)
@@ -162,8 +163,8 @@ namespace JeuDeMemo
         private string RecevoirInfoBouton(int tagBouton)
         {
             string sUri = "Images/Fruits/f";
-            int nbImage = tagBouton - 10;
-            sUri += nbImage.ToString() + ".jpg";
+            int nbImage = tagBouton;
+            sUri += _lstRandom[nbImage].ToString() + ".jpg";
             return sUri;
         }
     }
