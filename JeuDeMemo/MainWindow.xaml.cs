@@ -134,6 +134,7 @@ namespace JeuDeMemo
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
+            
             int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
             if (_premierChoix == 0)
                 _premierChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));

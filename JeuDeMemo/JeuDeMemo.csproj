@@ -173,6 +173,22 @@
     <Resource Include="Images\Voitures\v8.jpg" />
     <Resource Include="Images\Voitures\v9.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Fruits\f30.jpg" />
+    <Resource Include="Images\Fruits\f31.jpg" />
+    <Resource Include="Images\Fruits\f32.jpg" />
+    <Resource Include="Images\Fruits\f33.jpg" />
+    <Resource Include="Images\Fruits\f34.jpg" />
+    <Resource Include="Images\Fruits\f35.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Voitures\v30.jpg" />
+    <Resource Include="Images\Voitures\v31.jpg" />
+    <Resource Include="Images\Voitures\v32.jpg" />
+    <Resource Include="Images\Voitures\v33.jpg" />
+    <Resource Include="Images\Voitures\v34.jpg" />
+    <Resource Include="Images\Voitures\v35.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
