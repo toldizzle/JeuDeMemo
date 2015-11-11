@@ -22,9 +22,12 @@ namespace JeuDeMemo
     /// </summary>
     public partial class MainWindow : Window
     {
-        byte bGrandeur = 0;
-        int premierChoix = 0;
-        int deuxiemeChoix = 0;
+        byte _bGrandeur = 0;
+        int _premierChoix = 0;
+        int _deuxiemeChoix = 0;
+        List<int> _lstImages = new List<int>();
+        List<int> _lstRandom = new List<int>();
+        Random rand = new Random();
         public MainWindow()
         {
             InitializeComponent();
@@ -32,18 +35,16 @@ namespace JeuDeMemo
         public void JeuMemoire()
         {
             bool bFin = false;
-            List<int> lstImages = new List<int>();
+            
             //1 à 29 pour les cartes, 30 pour maudites, 31 pour unique, 32 joker,33 aléatoire,
             for (int x = 1; x <= 31; x++)
             {
-                lstImages.Add(x);
-                lstImages.Add(x);
+                _lstImages.Add(x);
+                _lstImages.Add(x);
             }
-            lstImages.Add(32);
-            lstImages.Add(33);
-            Random rand = new Random();
-            var lstRandom = lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
-            //MessageBox.Show(lstImages[33].ToString());
+            _lstImages.Add(32);
+            _lstImages.Add(33);
+            _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
             //while (!bFin)
             //{
 
@@ -103,15 +104,15 @@ namespace JeuDeMemo
 
             if (chk8x8.IsChecked == true)
             {
-                bGrandeur = 8;
+                _bGrandeur = 8;
             }
             else if (chk9x9.IsChecked == true)
             {
-                bGrandeur = 9;
+                _bGrandeur = 9;
             }
-            for (int x = 1; x <= bGrandeur; x++)
+            for (int x = 1; x <= _bGrandeur; x++)
             {
-                for (int y = 1; y <= bGrandeur; y++)
+                for (int y = 1; y <= _bGrandeur; y++)
                 {
                     string sNom = (x) + (y).ToString();
                     Button button = new Button()
@@ -129,18 +130,19 @@ namespace JeuDeMemo
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
-            if (premierChoix == 0)
-                premierChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
+            int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
+            if (_premierChoix == 0)
+                _premierChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
             else
-                deuxiemeChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
-            if(premierChoix != 0 && deuxiemeChoix != 0)
+                _deuxiemeChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
+            if(_premierChoix != 0 && _deuxiemeChoix != 0)
             {
                 System.Threading.Thread.Sleep(50);
-                premierChoix = 0;
-                deuxiemeChoix = 0;
+                _premierChoix = 0;
+                _deuxiemeChoix = 0;
             }
             //Créer une méthode pour recevoir un uri.
-            Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
+            Uri resourceUri = new Uri(RecevoirInfoBouton(iTag), UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
 
             BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
@@ -157,7 +159,13 @@ namespace JeuDeMemo
             Options.IsEnabled = true;
         }
         #endregion
-
+        private string RecevoirInfoBouton(int tagBouton)
+        {
+            string sUri = "Images/Fruits/f";
+            int nbImage = tagBouton - 10;
+            sUri += nbImage.ToString() + ".jpg";
+            return sUri;
+        }
     }
 }
 
