@@ -36,14 +36,16 @@ namespace JeuDeMemo
         {
             bool bFin = false;
             
-            //1 à 29 pour les cartes, 30 pour maudites, 31 pour unique, 32 joker,33 aléatoire,
-            for (int x = 1; x <= 31; x++)
+            //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
+            for (int x = 1; x <= 29; x++)
             {
                 _lstImages.Add(x);
                 _lstImages.Add(x);
             }
-            _lstImages.Add(32);
-            _lstImages.Add(33);
+            for (int i = 30; i <= 35; i++)
+            {
+                _lstImages.Add(i);
+            }
             _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
             //while (!bFin)
             //{
