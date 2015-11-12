@@ -43,7 +43,7 @@ namespace JeuDeMemo
         {
             bool bFin = false;
 
-           
+
             //Match des cartes
             if (_premierChoix == _deuxiemeChoix)
             {
@@ -66,22 +66,39 @@ namespace JeuDeMemo
             //Différentes cartes
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() => { })).Wait();
-                _premierChoix = 0;
-                _deuxiemeChoix = 0;
-                MessageBox.Show("Mauvais choix");
-
+                //Désactive les boutons
                 foreach (var item in Jeu.Children)
                 {
                     Button btn = (Button)item;
-                    if (btn.Name == _btn1)
-                        btn.Background = RecevoirCarteDefaut();
-                    if (btn.Name == _btn2)
-                        btn.Background = RecevoirCarteDefaut();
+                    btn.IsHitTestVisible = false;
                 }
-                
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                timer.Start();
+                timer.Tick += (sender, args) =>
+                {
+                    timer.Stop();
+                    foreach (var item in Jeu.Children)
+                    {
+                        Button btn = (Button)item;
+                        btn.IsHitTestVisible = false;
+                        if (btn.Name == _btn1)
+                            btn.Background = RecevoirCarteDefaut();
 
+                        if (btn.Name == _btn2)
+                            btn.Background = RecevoirCarteDefaut();
+                        //Active les boutons
+                        
+                    }
+                    foreach (var item in Jeu.Children)
+                    {
+                        Button btn = (Button)item;
+                        btn.IsHitTestVisible = true;
+                    }
+                };
+                _premierChoix = 0;
+                _deuxiemeChoix = 0;
             }
+           
             //while (!bFin)
             //{
 
@@ -179,6 +196,7 @@ namespace JeuDeMemo
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
+
             int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
             if (_premierChoix == 0)
             {
@@ -190,10 +208,9 @@ namespace JeuDeMemo
                 _deuxiemeChoix = _lstRandom[int.Parse(string.Format("{0}", (sender as Button).Tag))];
                 _btn2 = (sender as Button).Name;
             }
-            //Change le background
             (sender as Button).Background = RecevoirInfoBouton(iTag);
-
             JeuMemoire();
+
         }
 
         private void btnRecommencer_Click(object sender, RoutedEventArgs e)
@@ -235,7 +252,7 @@ namespace JeuDeMemo
             brush.ImageSource = temp;
             return brush;
         }
-        
+
     }
 }
 
