@@ -39,7 +39,7 @@ namespace JeuDeMemo
         {
             InitializeComponent();
         }
-        public void JeuMemoire()
+        public async void JeuMemoire()
         {
             bool bFin = false;
 
@@ -72,11 +72,10 @@ namespace JeuDeMemo
                     Button btn = (Button)item;
                     btn.IsHitTestVisible = false;
                 }
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
-                timer.Start();
-                timer.Tick += (sender, args) =>
+
+                await Task.Delay(1000);
                 {
-                    timer.Stop();
+                  
                     foreach (var item in Jeu.Children)
                     {
                         Button btn = (Button)item;
