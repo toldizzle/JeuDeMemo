@@ -14,6 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Windows.Threading;
+using System.Reflection;
+using System.Windows.Controls.Primitives;
 
 namespace JeuDeMemo
 {
@@ -25,6 +28,10 @@ namespace JeuDeMemo
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
+        string _btn1;
+        string _btn2;
+        bool _bTheme = false; //false = fruit      true = voiture
+
         List<int> _lstImages = new List<int>();
         List<int> _lstRandom = new List<int>();
         Random rand = new Random();
@@ -35,18 +42,46 @@ namespace JeuDeMemo
         public void JeuMemoire()
         {
             bool bFin = false;
-            
-            //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
-            for (int x = 1; x <= 29; x++)
+
+           
+            //Match des cartes
+            if (_premierChoix == _deuxiemeChoix)
             {
-                _lstImages.Add(x);
-                _lstImages.Add(x);
+                _premierChoix = 0;
+                _deuxiemeChoix = 0;
+                //Retourne les deux cartes
+                foreach (var item in Jeu.Children)
+                {
+                    Button btn = (Button)item;
+                    if (btn.Name == _btn1)
+                    {
+                        btn.IsEnabled = false;
+                    }
+                    if (btn.Name == _btn2)
+                    {
+                        btn.IsEnabled = false;
+                    }
+                }
             }
-            for (int i = 30; i <= 35; i++)
+            //Différentes cartes
+            else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
-                _lstImages.Add(i);
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() => { })).Wait();
+                _premierChoix = 0;
+                _deuxiemeChoix = 0;
+                MessageBox.Show("Mauvais choix");
+
+                foreach (var item in Jeu.Children)
+                {
+                    Button btn = (Button)item;
+                    if (btn.Name == _btn1)
+                        btn.Background = RecevoirCarteDefaut();
+                    if (btn.Name == _btn2)
+                        btn.Background = RecevoirCarteDefaut();
+                }
+                
+
             }
-            _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
             //while (!bFin)
             //{
 
@@ -76,11 +111,13 @@ namespace JeuDeMemo
         private void chkFruits_Checked(object sender, RoutedEventArgs e)
         {
             chkVoitures.IsChecked = false;
+            _bTheme = false;
         }
 
         private void chkVoitures_Checked(object sender, RoutedEventArgs e)
         {
             chkFruits.IsChecked = false;
+            _bTheme = true;
         }
 
         private void chkDebut2_Checked(object sender, RoutedEventArgs e)
@@ -98,12 +135,6 @@ namespace JeuDeMemo
             int iTag = 0;
             Options.IsEnabled = false;
             btnDemarrer.IsEnabled = false;
-            Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            var brush = new ImageBrush();
-            brush.ImageSource = temp;
 
             if (chk8x8.IsChecked == true)
             {
@@ -120,40 +151,49 @@ namespace JeuDeMemo
                     string sNom = (x) + (y).ToString();
                     Button button = new Button()
                     {
-                        Name = "btn" + sNom,
                         Tag = iTag,
-                        Background = brush
+                        Name = "btn" + sNom,
+                        Background = RecevoirCarteDefaut(),
+                        Focusable = false
                     };
+
                     button.Click += new RoutedEventHandler(button_Click);
-                    this.Jeu.Children.Add(button);
+
+                    Jeu.Children.Add(button);
                     iTag++;
                 }
             }
-            JeuMemoire();
+            //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
+            for (int x = 1; x <= 29; x++)
+            {
+                _lstImages.Add(x);
+                _lstImages.Add(x);
+            }
+            for (int i = 30; i <= 35; i++)
+            {
+                _lstImages.Add(i);
+            }
+            _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+
 
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
-            
             int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
             if (_premierChoix == 0)
-                _premierChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
-            else
-                _deuxiemeChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
-            if(_premierChoix != 0 && _deuxiemeChoix != 0)
             {
-                System.Threading.Thread.Sleep(50);
-                _premierChoix = 0;
-                _deuxiemeChoix = 0;
+                _premierChoix = _lstRandom[int.Parse(string.Format("{0}", (sender as Button).Tag))];
+                _btn1 = (sender as Button).Name;
             }
-            //Change l'image
-            Uri resourceUri = new Uri(RecevoirInfoBouton(iTag), UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            else if (_deuxiemeChoix == 0)
+            {
+                _deuxiemeChoix = _lstRandom[int.Parse(string.Format("{0}", (sender as Button).Tag))];
+                _btn2 = (sender as Button).Name;
+            }
+            //Change le background
+            (sender as Button).Background = RecevoirInfoBouton(iTag);
 
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            var brush = new ImageBrush();
-            brush.ImageSource = temp;
-            (sender as Button).Background = brush;
+            JeuMemoire();
         }
 
         private void btnRecommencer_Click(object sender, RoutedEventArgs e)
@@ -163,13 +203,39 @@ namespace JeuDeMemo
             Options.IsEnabled = true;
         }
         #endregion
-        private string RecevoirInfoBouton(int tagBouton)
+        private ImageBrush RecevoirInfoBouton(int tagBouton)
         {
-            string sUri = "Images/Fruits/f";
-            int nbImage = tagBouton;
-            sUri += _lstRandom[nbImage].ToString() + ".jpg";
-            return sUri;
+            string sUri;
+            if (!_bTheme)
+            {
+                sUri = "Images/Fruits/f";
+            }
+            else
+            {
+                sUri = "Images/Voitures/v";
+            }
+            int numBouton = tagBouton;
+            sUri += _lstRandom[numBouton].ToString() + ".jpg";
+
+            Uri resourceUri = new Uri(sUri, UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            var brush = new ImageBrush();
+            brush.ImageSource = temp;
+            return brush;
         }
+        private ImageBrush RecevoirCarteDefaut()
+        {
+            Uri resourceUri = new Uri("Images/Cartes/HLion.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            var brush = new ImageBrush();
+            brush.ImageSource = temp;
+            return brush;
+        }
+        
     }
 }
 
