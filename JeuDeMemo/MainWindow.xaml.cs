@@ -25,19 +25,24 @@ namespace JeuDeMemo
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool _bTourSysteme = false;
+        bool _bContreSysteme = false;
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
         string _btn1;
         string _btn2;
         bool _bTheme = false; //false = fruit      true = voiture
-
+        bool _bTourJ1 = false;
+        bool _bTourJ2 = false;
         List<int> _lstImages = new List<int>();
         List<int> _lstRandom = new List<int>();
         Random rand = new Random();
+        int _iChoixSysteme;
         public MainWindow()
         {
             InitializeComponent();
+            
         }
         public async void JeuMemoire()
         {
@@ -67,32 +72,23 @@ namespace JeuDeMemo
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
                 //Désactive les boutons
-                foreach (var item in Jeu.Children)
-                {
-                    Button btn = (Button)item;
-                    btn.IsHitTestVisible = false;
-                }
+                ArretJeu();
 
                 await Task.Delay(1000);
                 {
-                  
                     foreach (var item in Jeu.Children)
                     {
+                        //Retourne les cartes
                         Button btn = (Button)item;
-                        btn.IsHitTestVisible = false;
+                       
                         if (btn.Name == _btn1)
                             btn.Background = RecevoirCarteDefaut();
 
                         if (btn.Name == _btn2)
                             btn.Background = RecevoirCarteDefaut();
-                        //Active les boutons
-                        
                     }
-                    foreach (var item in Jeu.Children)
-                    {
-                        Button btn = (Button)item;
-                        btn.IsHitTestVisible = true;
-                    }
+                    //Active les boutons
+                    ActivationJeu();
                 };
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
@@ -117,11 +113,14 @@ namespace JeuDeMemo
         private void chkJoueur1_Checked(object sender, RoutedEventArgs e)
         {
             chkJoueur2.IsChecked = false;
+            lblJ2.Content = "Système";
+            
         }
 
         private void chkJoueur2_Checked(object sender, RoutedEventArgs e)
         {
             chkJoueur1.IsChecked = false;
+            lblJ2.Content = "Joueur 2";
         }
 
         private void chkFruits_Checked(object sender, RoutedEventArgs e)
@@ -148,48 +147,64 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
-            int iTag = 0;
-            Options.IsEnabled = false;
-            btnDemarrer.IsEnabled = false;
+            if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
+            {
+                btnRecommencer.IsEnabled = true;
+                int iTag = 0;
+                Options.IsEnabled = false;
+                btnDemarrer.IsEnabled = false;
+                //Tour de jeu
+                if (chkJoueur1.IsChecked == true)
+                    _bContreSysteme = true;
+                if (chkDebut1.IsChecked == true)
+                    _bTourJ1 = true;
+                else if (chkJoueur2.IsChecked == true && _bContreSysteme == false)
+                    _bTourJ2 = true;
+                else
+                    _bTourSysteme = true;
 
-            if (chk8x8.IsChecked == true)
-            {
-                _bGrandeur = 8;
-            }
-            else if (chk9x9.IsChecked == true)
-            {
-                _bGrandeur = 9;
-            }
-            for (int x = 1; x <= _bGrandeur; x++)
-            {
-                for (int y = 1; y <= _bGrandeur; y++)
+                if (chk8x8.IsChecked == true)
                 {
-                    string sNom = (x) + (y).ToString();
-                    Button button = new Button()
-                    {
-                        Tag = iTag,
-                        Name = "btn" + sNom,
-                        Background = RecevoirCarteDefaut(),
-                        Focusable = false
-                    };
-
-                    button.Click += new RoutedEventHandler(button_Click);
-
-                    Jeu.Children.Add(button);
-                    iTag++;
+                    _bGrandeur = 8;
                 }
+                else
+                {
+                    _bGrandeur = 9;
+                }
+                for (int x = 1; x <= _bGrandeur; x++)
+                {
+                    for (int y = 1; y <= _bGrandeur; y++)
+                    {
+                        string sNom = (x) + (y).ToString();
+                        Button button = new Button()
+                        {
+                            Tag = iTag,
+                            Name = "btn" + sNom,
+                            Background = RecevoirCarteDefaut(),
+                            Focusable = false
+                        };
+
+                        button.Click += new RoutedEventHandler(button_Click);
+
+                        Jeu.Children.Add(button);
+                        iTag++;
+                    }
+                }
+                //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
+                for (int x = 1; x <= 29; x++)
+                {
+                    _lstImages.Add(x);
+                    _lstImages.Add(x);
+                }
+                for (int i = 30; i <= 35; i++)
+                {
+                    _lstImages.Add(i);
+                }
+                _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
             }
-            //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
-            for (int x = 1; x <= 29; x++)
-            {
-                _lstImages.Add(x);
-                _lstImages.Add(x);
-            }
-            for (int i = 30; i <= 35; i++)
-            {
-                _lstImages.Add(i);
-            }
-            _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+            else
+                MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
+            
 
 
         }
@@ -217,6 +232,7 @@ namespace JeuDeMemo
             this.Jeu.Children.Clear();
             btnDemarrer.IsEnabled = true;
             Options.IsEnabled = true;
+
         }
         #endregion
         private ImageBrush RecevoirInfoBouton(int tagBouton)
@@ -251,7 +267,24 @@ namespace JeuDeMemo
             brush.ImageSource = temp;
             return brush;
         }
-
+        private void ArretJeu()
+        {
+            //Désactive les boutons
+            foreach (var item in Jeu.Children)
+            {
+                Button btn = (Button)item;
+                btn.IsHitTestVisible = false;
+            }
+        }
+        private void ActivationJeu()
+        {
+            //Désactive les boutons
+            foreach (var item in Jeu.Children)
+            {
+                Button btn = (Button)item;
+                btn.IsHitTestVisible = true;
+            }
+        }
     }
 }
 
