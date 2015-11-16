@@ -52,9 +52,13 @@ namespace JeuDeMemo
             //Match des cartes
             if (_premierChoix == _deuxiemeChoix)
             {
-                _premierChoix = 0;
-                _deuxiemeChoix = 0;
+                
                 //Retourne les deux cartes
+                foreach (var item in _lstRandom)
+                {
+                    if (item == _premierChoix)
+                        _lstImages.Remove(item);
+                }
                 foreach (var item in Jeu.Children)
                 {
                     Button btn = (Button)item;
@@ -67,6 +71,8 @@ namespace JeuDeMemo
                         btn.IsEnabled = false;
                     }
                 }
+                _premierChoix = 0;
+                _deuxiemeChoix = 0;
             }
             //Différentes cartes
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
@@ -204,8 +210,6 @@ namespace JeuDeMemo
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
-            
-
 
         }
         void button_Click(object sender, RoutedEventArgs e)
@@ -223,6 +227,7 @@ namespace JeuDeMemo
                 _btn2 = (sender as Button).Name;
             }
             (sender as Button).Background = RecevoirInfoBouton(iTag);
+            (sender as Button).IsHitTestVisible = false;
             JeuMemoire();
 
         }
