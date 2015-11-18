@@ -36,8 +36,8 @@
             <Label x:Name="lblJ1Point" Content="Joueur 1" Margin="21,33,159,27" FontFamily="Narkisim"/>
             <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667"/>
             <Label x:Name="lblJ2Point" Content="Joueur 2" Margin="158,33,22,27" FontFamily="Narkisim"/>
-            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Text="Pointage" Margin="21,59,159,12" FontFamily="Narkisim"/>
-            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Text="Pointage" Margin="158,59,22,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="21,59,159,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="158,59,22,12" FontFamily="Narkisim"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="503" Margin="10,176,0,0" VerticalAlignment="Top" Width="516">
             <Label HorizontalContentAlignment="Center" x:Name="label6" Content="Grille de jeu&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="516"/>
