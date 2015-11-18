@@ -43,7 +43,9 @@ namespace JeuDeMemo
         List<int> _lstImages = new List<int>();
         List<int> _lstRandom = new List<int>();
         Random rand = new Random();
-        int _iChoixSysteme;
+        List<int> _lstChoixSysteme = new List<int>();
+        List<int> _lstChoixJoueur1 = new List<int>();
+
         bool _bFinDePartie = false;
         public MainWindow()
         {
@@ -55,38 +57,34 @@ namespace JeuDeMemo
             //Match des cartes
             if (_premierChoix == _deuxiemeChoix)
             {
-                //Retourne les deux cartes
+                //Retire les deux cartes
                 foreach (var item in _lstRandom)
                 {
                     if (item == _premierChoix)
                         _lstImages.Remove(item);
                 }
-                foreach (var item in Jeu.Children)
+                //Désactive les boutons qui match
+                foreach (Button item in Jeu.Children)
                 {
-                    Button btn = (Button)item;
-                    if (btn.Name == _btn1)
-                    {
-                        btn.IsEnabled = false;
-                        txtChoixJ1.Text += btn.Name + "-";
-                    }
-                    if (btn.Name == _btn2)
-                    {
-                        btn.IsEnabled = false;
-                        txtChoixJ1.Text += btn.Name + "-";
-                    }
+                    if (item.Name == _btn1)
+                        item.IsEnabled = false;
+                    if (item.Name == _btn2)
+                        item.IsEnabled = false;
                 }
                 //Gain de point
                 if (_bTourJ1)
                 {
                     _pointageJ1++;
                     txtPointJ1.Text = _pointageJ1.ToString();
-                    // txtChoixJ1.Text += _premierChoix + "-" + _deuxiemeChoix + " ";
+                    _lstChoixJoueur1.Add(_premierChoix);
+                    _lstChoixJoueur1.Add(_deuxiemeChoix);
                 }
                 else
                 {
                     _pointageJ2++;
                     txtPointJ2.Text = _pointageJ2.ToString();
-                    // txtChoixJ2.Text += _premierChoix + "-" + _deuxiemeChoix + " ";
+                    _lstChoixSysteme.Add(_premierChoix);
+                    _lstChoixSysteme.Add(_deuxiemeChoix);
                 }
 
                 _premierChoix = 0;
@@ -101,16 +99,14 @@ namespace JeuDeMemo
 
                 await Task.Delay(1000);
                 {
-                    foreach (var item in Jeu.Children)
+                    foreach (Button item in Jeu.Children)
                     {
                         //Retourne les cartes
-                        Button btn = (Button)item;
+                        if (item.Name == _btn1)
+                            item.Background = RecevoirCarteDefaut();
 
-                        if (btn.Name == _btn1)
-                            btn.Background = RecevoirCarteDefaut();
-
-                        if (btn.Name == _btn2)
-                            btn.Background = RecevoirCarteDefaut();
+                        if (item.Name == _btn2)
+                            item.Background = RecevoirCarteDefaut();
                     }
                     //Active les boutons
                     ActivationJeu();
@@ -305,19 +301,17 @@ namespace JeuDeMemo
         private void ArretJeu()
         {
             //Désactive les boutons
-            foreach (var item in Jeu.Children)
+            foreach (Button item in Jeu.Children)
             {
-                Button btn = (Button)item;
-                btn.IsHitTestVisible = false;
+                item.IsHitTestVisible = false;
             }
         }
         private void ActivationJeu()
         {
             //Désactive les boutons
-            foreach (var item in Jeu.Children)
+            foreach (Button item in Jeu.Children)
             {
-                Button btn = (Button)item;
-                btn.IsHitTestVisible = true;
+                item.IsHitTestVisible = true;
             }
         }
         private void ChangementTour()
@@ -348,40 +342,41 @@ namespace JeuDeMemo
         {
             //Construit une liste des boutons disponibles
             List<Button> lstBoutonDisponible = new List<Button>();
-            foreach (var item in Jeu.Children)
+            foreach (Button item in Jeu.Children)
             {
-                if ((item as Button).IsEnabled)
+                if (item.IsEnabled)
                 {
-                    lstBoutonDisponible.Add(item as Button);
+                    lstBoutonDisponible.Add(item);
                 }
             }
             bool bDifferentBoutonsChoisis = true;
             _btn1 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
+            //Empêche qu'il choisisse le même bouton.
             while (bDifferentBoutonsChoisis)
             {
                 _btn2 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
                 if (_btn1 != _btn2)
                     bDifferentBoutonsChoisis = false;
             }
-           
+
             //Cherche la valeur des boutons choisis
-            foreach (var item in Jeu.Children)
+            foreach (Button item in Jeu.Children)
             {
-                if ((item as Button).Name == _btn1)
+                if (item.Name == _btn1)
                 {
-                    //await Task.Delay(1000);
+                    await Task.Delay(1000);
                     {
-                        int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
-                        (item as Button).Background = RecevoirInfoBouton(iTag);
+                        int iTag = int.Parse(string.Format("{0}", item.Tag));
+                        item.Background = RecevoirInfoBouton(iTag);
                         _premierChoix = _lstRandom[iTag];
                     }
                 }
-                if ((item as Button).Name == _btn2)
+                if (item.Name == _btn2)
                 {
-                    //await Task.Delay(1000);
+                    await Task.Delay(1000);
                     {
-                        int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
-                        (item as Button).Background = RecevoirInfoBouton(iTag);
+                        int iTag = int.Parse(string.Format("{0}", item.Tag));
+                        item.Background = RecevoirInfoBouton(iTag);
                         _deuxiemeChoix = _lstRandom[iTag];
                     }
                 }
