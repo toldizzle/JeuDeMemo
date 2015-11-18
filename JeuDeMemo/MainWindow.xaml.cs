@@ -77,12 +77,12 @@ namespace JeuDeMemo
                 if (_bTourJ1)
                 {
                     _pointageJ1++;
-                    lblJ1Point.Content = _pointageJ1;
+                    txtPointJ1.Text = _pointageJ1.ToString();
                 }
                 else
                 {
                     _pointageJ2++;
-                    lblJ2Point.Content = _pointageJ2;
+                    txtPointJ2.Text = _pointageJ2.ToString();
                 }
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
@@ -318,6 +318,17 @@ namespace JeuDeMemo
             {
                 _bTourSysteme = !_bTourSysteme;
                 _bTourJ1 = !_bTourJ1;
+                if (_bTourJ1)
+                {
+                    lblJ1Point.Background = Brushes.Red;
+                    lblJ2Point.Background = Brushes.White;
+                }
+                else
+                {
+                    lblJ1Point.Background = Brushes.White;
+                    lblJ2Point.Background = Brushes.Red;
+                }
+
             }
             else
             {
@@ -336,8 +347,8 @@ namespace JeuDeMemo
                     lstBoutonDisponible.Add(item as Button);
                 }
             }
-            _btn1 = lstBoutonDisponible.ElementAt(rand.Next(1, lstBoutonDisponible.Count)).Name;
-            _btn2 = lstBoutonDisponible.ElementAt(rand.Next(1, lstBoutonDisponible.Count)).Name;
+            _btn1 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
+            _btn2 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
             //Cherche la valeur des boutons choisis
             foreach (var item in Jeu.Children)
             {
