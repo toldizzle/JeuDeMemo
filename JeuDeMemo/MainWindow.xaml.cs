@@ -67,10 +67,12 @@ namespace JeuDeMemo
                     if (btn.Name == _btn1)
                     {
                         btn.IsEnabled = false;
+                        txtChoixJ1.Text += btn.Name + "-";
                     }
                     if (btn.Name == _btn2)
                     {
                         btn.IsEnabled = false;
+                        txtChoixJ1.Text += btn.Name + "-";
                     }
                 }
                 //Gain de point
@@ -78,12 +80,15 @@ namespace JeuDeMemo
                 {
                     _pointageJ1++;
                     txtPointJ1.Text = _pointageJ1.ToString();
+                    // txtChoixJ1.Text += _premierChoix + "-" + _deuxiemeChoix + " ";
                 }
                 else
                 {
                     _pointageJ2++;
                     txtPointJ2.Text = _pointageJ2.ToString();
+                    // txtChoixJ2.Text += _premierChoix + "-" + _deuxiemeChoix + " ";
                 }
+
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
                 ChangementTour();
@@ -350,14 +355,21 @@ namespace JeuDeMemo
                     lstBoutonDisponible.Add(item as Button);
                 }
             }
+            bool bDifferentBoutonsChoisis = true;
             _btn1 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
-            _btn2 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
+            while (bDifferentBoutonsChoisis)
+            {
+                _btn2 = lstBoutonDisponible.ElementAt(rand.Next(0, lstBoutonDisponible.Count)).Name;
+                if (_btn1 != _btn2)
+                    bDifferentBoutonsChoisis = false;
+            }
+           
             //Cherche la valeur des boutons choisis
             foreach (var item in Jeu.Children)
             {
                 if ((item as Button).Name == _btn1)
                 {
-                    await Task.Delay(1000);
+                    //await Task.Delay(1000);
                     {
                         int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
                         (item as Button).Background = RecevoirInfoBouton(iTag);
@@ -366,7 +378,7 @@ namespace JeuDeMemo
                 }
                 if ((item as Button).Name == _btn2)
                 {
-                    await Task.Delay(1000);
+                    //await Task.Delay(1000);
                     {
                         int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
                         (item as Button).Background = RecevoirInfoBouton(iTag);
