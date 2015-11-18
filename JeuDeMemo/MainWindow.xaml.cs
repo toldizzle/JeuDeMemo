@@ -222,7 +222,7 @@ namespace JeuDeMemo
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
-            
+
 
         }
         void button_Click(object sender, RoutedEventArgs e)
@@ -314,7 +314,7 @@ namespace JeuDeMemo
         }
         private void ChangementTour()
         {
-            if(_bContreSysteme)
+            if (_bContreSysteme)
             {
                 _bTourSysteme = !_bTourSysteme;
                 _bTourJ1 = !_bTourJ1;
@@ -325,30 +325,35 @@ namespace JeuDeMemo
                 _bTourJ2 = !_bTourJ2;
             }
         }
-        private void ChoixOrdinateur()
+        private async void ChoixOrdinateur()
         {
-            _btn1 = "btn" + rand.Next(1,_lstImages.Count);
+            //Construit une liste des boutons disponibles
+            List<Button> lstBoutonDisponible = new List<Button>();
+            foreach (var item in Jeu.Children)
+            {
+                if ((item as Button).IsEnabled)
+                {
+                    lstBoutonDisponible.Add(item as Button);
+                }
+            }
+            _btn1 = lstBoutonDisponible.ElementAt(rand.Next(1, lstBoutonDisponible.Count)).Name;
+            _btn2 = lstBoutonDisponible.ElementAt(rand.Next(1, lstBoutonDisponible.Count)).Name;
+            //Cherche la valeur des boutons choisis
             foreach (var item in Jeu.Children)
             {
                 if ((item as Button).Name == _btn1)
                 {
                     int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
                     (item as Button).Background = RecevoirInfoBouton(iTag);
-                    _premierChoix = iTag;
+                    _premierChoix = _lstRandom[iTag];
+                    await Task.Delay(1000);
                 }
-                    
-            }
-
-            _btn2 = "btn" + rand.Next(1,_lstImages.Count);
-            foreach(var item in Jeu.Children)
-            {
                 if ((item as Button).Name == _btn2)
                 {
                     int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
                     (item as Button).Background = RecevoirInfoBouton(iTag);
-                    _deuxiemeChoix = iTag;
+                    _deuxiemeChoix = _lstRandom[iTag];
                 }
-
             }
             JeuMemoire();
 
