@@ -218,7 +218,10 @@ namespace JeuDeMemo
                 else if (chkJoueur2.IsChecked == true && _bContreSysteme == false)
                     _bTourJ2 = true;
                 else
+                {
                     _bTourSysteme = true;
+                    ChoixOrdinateur();
+                }
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
@@ -354,20 +357,24 @@ namespace JeuDeMemo
             {
                 if ((item as Button).Name == _btn1)
                 {
-                    int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
-                    (item as Button).Background = RecevoirInfoBouton(iTag);
-                    _premierChoix = _lstRandom[iTag];
                     await Task.Delay(1000);
+                    {
+                        int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
+                        (item as Button).Background = RecevoirInfoBouton(iTag);
+                        _premierChoix = _lstRandom[iTag];
+                    }
                 }
                 if ((item as Button).Name == _btn2)
                 {
-                    int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
-                    (item as Button).Background = RecevoirInfoBouton(iTag);
-                    _deuxiemeChoix = _lstRandom[iTag];
+                    await Task.Delay(1000);
+                    {
+                        int iTag = int.Parse(string.Format("{0}", (item as Button).Tag));
+                        (item as Button).Background = RecevoirInfoBouton(iTag);
+                        _deuxiemeChoix = _lstRandom[iTag];
+                    }
                 }
             }
             JeuMemoire();
-
         }
     }
 }
