@@ -41,7 +41,6 @@ namespace JeuDeMemo
         bool _bTheme = false; //false = fruit      true = voiture
 
         List<int> _lstImages = new List<int>();
-        List<int> _lstRandom = new List<int>();
         Random rand = new Random();
         List<int> _lstChoixSysteme = new List<int>();
         List<int> _lstChoixJoueur1 = new List<int>();
@@ -54,15 +53,15 @@ namespace JeuDeMemo
         }
         public async void JeuMemoire()
         {
+            txtPointJ1.Text = _pointageJ1.ToString();
+            txtPointJ2.Text = _pointageJ2.ToString();
+
             //Match des cartes
             if (_premierChoix == _deuxiemeChoix)
             {
                 //Retire les deux cartes
-                foreach (var item in _lstRandom)
-                {
-                    if (item == _premierChoix)
-                        _lstImages.Remove(item);
-                }
+                _lstImages.RemoveAll(n => n == _premierChoix);
+
                 //Désactive les boutons qui match
                 foreach (Button item in Jeu.Children)
                 {
@@ -75,14 +74,12 @@ namespace JeuDeMemo
                 if (_bTourJ1)
                 {
                     _pointageJ1++;
-                    txtPointJ1.Text = _pointageJ1.ToString();
                     _lstChoixJoueur1.Add(_premierChoix);
                     _lstChoixJoueur1.Add(_deuxiemeChoix);
                 }
                 else
                 {
                     _pointageJ2++;
-                    txtPointJ2.Text = _pointageJ2.ToString();
                     _lstChoixSysteme.Add(_premierChoix);
                     _lstChoixSysteme.Add(_deuxiemeChoix);
                 }
@@ -96,7 +93,33 @@ namespace JeuDeMemo
             {
                 //Désactive les boutons
                 ArretJeu();
-
+                #region MÉLANGE 35
+                if (_premierChoix == 35 || _deuxiemeChoix == 35)
+                {
+                    _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+                    MelangeCarte();
+                }
+                #endregion
+                #region MAUDITE 30
+                else if (_premierChoix == 30 || _deuxiemeChoix == 30)
+                {
+                    if (_bTourJ1)
+                        _pointageJ1--;
+                    else
+                        _pointageJ2--;
+                    MelangeCarte();
+                }
+                #endregion
+                #region MAUDITE 31
+                else if (_premierChoix == 31 || _deuxiemeChoix == 31)
+                {
+                    if (_bTourJ1)
+                        _pointageJ1--;
+                    else
+                        _pointageJ2--;
+                    MelangeCarte();
+                }
+                #endregion
                 await Task.Delay(1000);
                 {
                     foreach (Button item in Jeu.Children)
@@ -111,10 +134,37 @@ namespace JeuDeMemo
                     //Active les boutons
                     ActivationJeu();
                 };
+                #region JOKER 34
+                if (_premierChoix == 34)
+                {
+                    foreach (Button item in Jeu.Children)
+                    {
+                        if (item.Name == _btn1)
+                        {
+                            item.IsEnabled = false;
+                        }
+                    }
+                }
+                else if (_deuxiemeChoix == 34)
+                {
+                    foreach (Button item in Jeu.Children)
+                    {
+                        if (item.Name == _btn1)
+                        {
+                            item.IsEnabled = false;
+                        }
+                    }
+                }
+                #endregion
+                else
+                    ChangementTour();
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
-                ChangementTour();
+
             }
+            txtPointJ1.Text = _pointageJ1.ToString();
+            txtPointJ2.Text = _pointageJ2.ToString();
+            //Tour de l'ordinateur
             if (_bTourSysteme)
                 ChoixOrdinateur();
         }
@@ -169,7 +219,7 @@ namespace JeuDeMemo
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
                 btnRecommencer.IsEnabled = true;
-                int iTag = 0;
+
                 Options.IsEnabled = false;
                 btnDemarrer.IsEnabled = false;
 
@@ -181,6 +231,21 @@ namespace JeuDeMemo
                 {
                     _bGrandeur = 9;
                 }
+
+                //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
+                for (int x = 1; x <= 29; x++)
+                {
+                    _lstImages.Add(x);
+                    _lstImages.Add(x);
+                }
+                for (int i = 30; i <= 35; i++)
+                {
+                    _lstImages.Add(i);
+                }
+                //Mélange la liste
+                _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+                //Création des boutons
+                int iTag = 0;
                 for (int x = 1; x <= _bGrandeur; x++)
                 {
                     for (int y = 1; y <= _bGrandeur; y++)
@@ -188,7 +253,7 @@ namespace JeuDeMemo
                         string sNom = (x) + (y).ToString();
                         Button button = new Button()
                         {
-                            Tag = iTag,
+                            Tag = _lstImages[iTag],
                             Name = "btn" + sNom,
                             Background = RecevoirCarteDefaut(),
                             Focusable = false
@@ -200,17 +265,6 @@ namespace JeuDeMemo
                         iTag++;
                     }
                 }
-                //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
-                for (int x = 1; x <= 29; x++)
-                {
-                    _lstImages.Add(x);
-                    _lstImages.Add(x);
-                }
-                for (int i = 30; i <= 35; i++)
-                {
-                    _lstImages.Add(i);
-                }
-                _lstRandom = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
                 //Tour de jeu
                 if (chkJoueur1.IsChecked == true)
                     _bContreSysteme = true;
@@ -236,12 +290,12 @@ namespace JeuDeMemo
                 int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
                 if (_premierChoix == 0)
                 {
-                    _premierChoix = _lstRandom[int.Parse(string.Format("{0}", (sender as Button).Tag))];
+                    _premierChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
                     _btn1 = (sender as Button).Name;
                 }
                 else if (_deuxiemeChoix == 0)
                 {
-                    _deuxiemeChoix = _lstRandom[int.Parse(string.Format("{0}", (sender as Button).Tag))];
+                    _deuxiemeChoix = int.Parse(string.Format("{0}", (sender as Button).Tag));
                     _btn2 = (sender as Button).Name;
                 }
                 (sender as Button).Background = RecevoirInfoBouton(iTag);
@@ -277,8 +331,7 @@ namespace JeuDeMemo
             {
                 sUri = "Images/Voitures/v";
             }
-            int numBouton = tagBouton;
-            sUri += _lstRandom[numBouton].ToString() + ".jpg";
+            sUri += tagBouton.ToString() + ".jpg";
 
             Uri resourceUri = new Uri(sUri, UriKind.Relative);
             StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
@@ -305,6 +358,7 @@ namespace JeuDeMemo
             {
                 item.IsHitTestVisible = false;
             }
+
         }
         private void ActivationJeu()
         {
@@ -368,7 +422,7 @@ namespace JeuDeMemo
                     {
                         int iTag = int.Parse(string.Format("{0}", item.Tag));
                         item.Background = RecevoirInfoBouton(iTag);
-                        _premierChoix = _lstRandom[iTag];
+                        _premierChoix = iTag;
                     }
                 }
                 if (item.Name == _btn2)
@@ -377,11 +431,24 @@ namespace JeuDeMemo
                     {
                         int iTag = int.Parse(string.Format("{0}", item.Tag));
                         item.Background = RecevoirInfoBouton(iTag);
-                        _deuxiemeChoix = _lstRandom[iTag];
+                        _deuxiemeChoix = iTag;
                     }
                 }
             }
             JeuMemoire();
+        }
+        private void MelangeCarte()
+        {
+            int i = 0;
+            _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+            foreach (Button item in Jeu.Children)
+            {
+                if (item.IsEnabled)
+                {
+                    item.Tag = _lstImages[i];
+                    ++i;
+                }
+            }
         }
     }
 }
