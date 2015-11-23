@@ -60,7 +60,8 @@ namespace JeuDeMemo
             if (_premierChoix == _deuxiemeChoix)
             {
                 //Retire les deux cartes
-                _lstImages.RemoveAll(n => n == _premierChoix);
+                _lstImages.Remove(_premierChoix);
+                _lstImages.Remove(_deuxiemeChoix);
 
                 //Désactive les boutons qui match
                 foreach (Button item in Jeu.Children)
@@ -142,6 +143,7 @@ namespace JeuDeMemo
                         if (item.Name == _btn1)
                         {
                             item.IsEnabled = false;
+                            break;
                         }
                     }
                 }
@@ -149,9 +151,10 @@ namespace JeuDeMemo
                 {
                     foreach (Button item in Jeu.Children)
                     {
-                        if (item.Name == _btn1)
+                        if (item.Name == _btn2)
                         {
                             item.IsEnabled = false;
+                            break;
                         }
                     }
                 }
@@ -242,13 +245,23 @@ namespace JeuDeMemo
                 {
                     _lstImages.Add(i);
                 }
+                if (_bGrandeur == 9)
+                {
+                    for (int i = 1; i < 9; i++)
+                    {
+                        _lstImages.Add(i);
+                        _lstImages.Add(i);
+                    }
+                    _lstImages.Add(34);
+                }
+                    
                 //Mélange la liste
                 _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
                 //Création des boutons
                 int iTag = 0;
-                for (int x = 1; x <= _bGrandeur; x++)
+                for (int x = 0; x < _bGrandeur; ++x)
                 {
-                    for (int y = 1; y <= _bGrandeur; y++)
+                    for (int y = 0; y < _bGrandeur; ++y)
                     {
                         string sNom = (x) + (y).ToString();
                         Button button = new Button()
