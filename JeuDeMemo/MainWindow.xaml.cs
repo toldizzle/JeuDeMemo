@@ -31,7 +31,7 @@ namespace JeuDeMemo
         bool _bTourJ1 = false;
         bool _bTourJ2 = false;
         int _pointageJ1 = 0;
-        int _pointageJ2 = 0;
+        int _pointageJ2 = 1;
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
@@ -102,21 +102,21 @@ namespace JeuDeMemo
                 }
                 #endregion
                 #region MAUDITE 30
-                else if (_premierChoix == 30 || _deuxiemeChoix == 30)
+                if (_premierChoix == 30 || _deuxiemeChoix == 30)
                 {
-                    if (_bTourJ1)
+                    if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
-                    else
+                    else if ( _bTourJ2 && _pointageJ2 > 0)
                         _pointageJ2--;
                     MelangeCarte();
                 }
                 #endregion
                 #region MAUDITE 31
-                else if (_premierChoix == 31 || _deuxiemeChoix == 31)
+                if (_premierChoix == 31 || _deuxiemeChoix == 31)
                 {
-                    if (_bTourJ1)
+                    if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
-                    else
+                    else if (_bTourJ2 && _pointageJ2 > 0)
                         _pointageJ2--;
                     MelangeCarte();
                 }
@@ -132,8 +132,7 @@ namespace JeuDeMemo
                         if (item.Name == _btn2)
                             item.Background = RecevoirCarteDefaut();
                     }
-                    //Active les boutons
-                    ActivationJeu();
+                    
                 };
                 #region JOKER 34
                 if (_premierChoix == 34)
@@ -146,6 +145,7 @@ namespace JeuDeMemo
                             break;
                         }
                     }
+                    _lstImages.Remove(_premierChoix);
                 }
                 else if (_deuxiemeChoix == 34)
                 {
@@ -157,10 +157,13 @@ namespace JeuDeMemo
                             break;
                         }
                     }
+                    _lstImages.Remove(_deuxiemeChoix);
                 }
                 #endregion
                 else
                     ChangementTour();
+                //Active les boutons
+                ActivationJeu();
                 _premierChoix = 0;
                 _deuxiemeChoix = 0;
 
@@ -186,6 +189,7 @@ namespace JeuDeMemo
         {
             chkJoueur2.IsChecked = false;
             lblJ2.Content = "Système";
+            lblJ2Point.Content = "Système";
 
         }
 
@@ -193,6 +197,7 @@ namespace JeuDeMemo
         {
             chkJoueur1.IsChecked = false;
             lblJ2.Content = "Joueur 2";
+            lblJ2Point.Content = "Joueur 2";
         }
 
         private void chkFruits_Checked(object sender, RoutedEventArgs e)
