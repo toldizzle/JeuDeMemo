@@ -57,7 +57,7 @@ namespace JeuDeMemo
             txtPointJ2.Text = _pointageJ2.ToString();
 
             //Match des cartes
-            if (_premierChoix == _deuxiemeChoix)
+            if (_premierChoix == _deuxiemeChoix && ( _premierChoix != 35 && _deuxiemeChoix != 35))
             {
                 //Retire les deux cartes
                 _lstImages.Remove(_premierChoix);
@@ -106,7 +106,7 @@ namespace JeuDeMemo
                 {
                     if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
-                    else if ( _bTourJ2 && _pointageJ2 > 0)
+                    else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
                         _pointageJ2--;
                     MelangeCarte();
                 }
@@ -116,7 +116,7 @@ namespace JeuDeMemo
                 {
                     if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
-                    else if (_bTourJ2 && _pointageJ2 > 0)
+                    else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
                         _pointageJ2--;
                     MelangeCarte();
                 }
@@ -257,7 +257,7 @@ namespace JeuDeMemo
                         _lstImages.Add(i);
                         _lstImages.Add(i);
                     }
-                    _lstImages.Add(34);
+                    _lstImages.Add(35);
                 }
                     
                 //Mélange la liste
