@@ -57,38 +57,56 @@ namespace JeuDeMemo
             txtPointJ2.Text = _pointageJ2.ToString();
 
             //Match des cartes
-            if (_premierChoix == _deuxiemeChoix && ( _premierChoix != 35 && _deuxiemeChoix != 35))
+            if (_premierChoix == _deuxiemeChoix && (_premierChoix != 35 && _deuxiemeChoix != 35))
             {
-                //Retire les deux cartes
-                _lstImages.Remove(_premierChoix);
-                _lstImages.Remove(_deuxiemeChoix);
+                for (int x = 1; x <= 29; x++)
+                {
+                    switch (_lstImages.Contains(x))
+                    {
+                        case true: _bFinDePartie = false; break;
+                        default: _bFinDePartie = true; break;
+                    }
+                }
+                if(!_bFinDePartie)
+                {
+                    //Retire les deux cartes
+                    _lstImages.Remove(_premierChoix);
+                    _lstImages.Remove(_deuxiemeChoix);
 
-                //Désactive les boutons qui match
-                foreach (Button item in Jeu.Children)
-                {
-                    if (item.Name == _btn1)
-                        item.IsEnabled = false;
-                    if (item.Name == _btn2)
-                        item.IsEnabled = false;
+                    //Désactive les boutons qui match
+                    foreach (Button item in Jeu.Children)
+                    {
+                        if (item.Name == _btn1)
+                            item.IsEnabled = false;
+                        if (item.Name == _btn2)
+                            item.IsEnabled = false;
+                    }
+                    //Gain de point
+                    if (_bTourJ1)
+                    {
+                        _pointageJ1++;
+                        _lstChoixJoueur1.Add(_premierChoix);
+                        _lstChoixJoueur1.Add(_deuxiemeChoix);
+                    }
+                    else
+                    {
+                        _pointageJ2++;
+                        _lstChoixSysteme.Add(_premierChoix);
+                        _lstChoixSysteme.Add(_deuxiemeChoix);
+                    }
+
+                    _premierChoix = 0;
+                    _deuxiemeChoix = 0;
+                    ChangementTour();
                 }
-                //Gain de point
-                if (_bTourJ1)
-                {
-                    _pointageJ1++;
-                    _lstChoixJoueur1.Add(_premierChoix);
-                    _lstChoixJoueur1.Add(_deuxiemeChoix);
-                }
+                //Fin de partie
                 else
                 {
-                    _pointageJ2++;
-                    _lstChoixSysteme.Add(_premierChoix);
-                    _lstChoixSysteme.Add(_deuxiemeChoix);
+                    ArretJeu();
+                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2? lblJ1Point.Content:lblJ2Point.Content) + "!");
                 }
-
-                _premierChoix = 0;
-                _deuxiemeChoix = 0;
-                ChangementTour();
             }
+
             //Différentes cartes
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
@@ -132,7 +150,7 @@ namespace JeuDeMemo
                         if (item.Name == _btn2)
                             item.Background = RecevoirCarteDefaut();
                     }
-                    
+
                 };
                 #region JOKER 34
                 if (_premierChoix == 34)
@@ -259,7 +277,7 @@ namespace JeuDeMemo
                     }
                     _lstImages.Add(35);
                 }
-                    
+
                 //Mélange la liste
                 _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
                 //Création des boutons
