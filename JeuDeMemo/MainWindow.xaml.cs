@@ -31,7 +31,7 @@ namespace JeuDeMemo
         bool _bTourJ1 = false;
         bool _bTourJ2 = false;
         int _pointageJ1 = 0;
-        int _pointageJ2 = 1;
+        int _pointageJ2 = 0;
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
@@ -56,9 +56,10 @@ namespace JeuDeMemo
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
 
-            //Match des cartes
+            //Match des cartes (empêche l'erreur de 2 cartes mélanges)
             if (_premierChoix == _deuxiemeChoix && (_premierChoix != 35 && _deuxiemeChoix != 35))
             {
+                lblEtat.Content = "";
                 for (int x = 1; x <= 29; x++)
                 {
                     switch (_lstImages.Contains(x))
@@ -67,7 +68,7 @@ namespace JeuDeMemo
                         default: _bFinDePartie = true; break;
                     }
                 }
-                if(!_bFinDePartie)
+                if (!_bFinDePartie)
                 {
                     //Retire les deux cartes
                     _lstImages.Remove(_premierChoix);
@@ -94,7 +95,7 @@ namespace JeuDeMemo
                         _lstChoixSysteme.Add(_premierChoix);
                         _lstChoixSysteme.Add(_deuxiemeChoix);
                     }
-
+                    lblEtat.Content = ((_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " marque un point!");
                     _premierChoix = 0;
                     _deuxiemeChoix = 0;
                     ChangementTour();
@@ -103,18 +104,20 @@ namespace JeuDeMemo
                 else
                 {
                     ArretJeu();
-                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2? lblJ1Point.Content:lblJ2Point.Content) + "!");
+                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
                 }
             }
 
             //Différentes cartes
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
+                lblEtat.Content = "";
                 //Désactive les boutons
                 ArretJeu();
                 #region MÉLANGE 35
                 if (_premierChoix == 35 || _deuxiemeChoix == 35)
                 {
+                    lblEtat.Content = ("MÉLANGE: Le jeu se mélange!");
                     _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
                     MelangeCarte();
                 }
@@ -122,6 +125,7 @@ namespace JeuDeMemo
                 #region MAUDITE 30
                 if (_premierChoix == 30 || _deuxiemeChoix == 30)
                 {
+                    lblEtat.Content = ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
                     if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
                     else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
@@ -132,6 +136,7 @@ namespace JeuDeMemo
                 #region MAUDITE 31
                 if (_premierChoix == 31 || _deuxiemeChoix == 31)
                 {
+                    lblEtat.Content = ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
                     if (_bTourJ1 && _pointageJ1 > 0)
                         _pointageJ1--;
                     else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
@@ -155,6 +160,7 @@ namespace JeuDeMemo
                 #region JOKER 34
                 if (_premierChoix == 34)
                 {
+                    lblEtat.Content = ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
                     foreach (Button item in Jeu.Children)
                     {
                         if (item.Name == _btn1)
@@ -280,6 +286,9 @@ namespace JeuDeMemo
 
                 //Mélange la liste
                 _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+                txtPointJ1.Text = _pointageJ1.ToString();
+                txtPointJ2.Text = _pointageJ2.ToString();
+
                 //Création des boutons
                 int iTag = 0;
                 for (int x = 0; x < _bGrandeur; ++x)
