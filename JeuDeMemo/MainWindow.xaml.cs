@@ -57,147 +57,153 @@ namespace JeuDeMemo
             txtPointJ2.Text = _pointageJ2.ToString();
 
             //Match des cartes (empêche l'erreur de 2 cartes mélanges)
-            if (_premierChoix == _deuxiemeChoix && (_premierChoix != 35 && _deuxiemeChoix != 35))
+            if (_premierChoix == _deuxiemeChoix && (_premierChoix != 35 && _deuxiemeChoix != 35) && _premierChoix != 32 && _premierChoix != 33 && _deuxiemeChoix != 32 && _deuxiemeChoix != 33)
             {
-                lblEtat.Content = "";
-                for (int x = 1; x <= 29; x++)
-                {
-                    switch (_lstImages.Contains(x))
-                    {
-                        case true: _bFinDePartie = false; break;
-                        default: _bFinDePartie = true; break;
-                    }
-                }
-                if (!_bFinDePartie)
-                {
-                    //Retire les deux cartes
-                    _lstImages.Remove(_premierChoix);
-                    _lstImages.Remove(_deuxiemeChoix);
-
-                    //Désactive les boutons qui match
-                    foreach (Button item in Jeu.Children)
-                    {
-                        if (item.Name == _btn1)
-                            item.IsEnabled = false;
-                        if (item.Name == _btn2)
-                            item.IsEnabled = false;
-                    }
-                    //Gain de point
-                    if (_bTourJ1)
-                    {
-                        _pointageJ1++;
-                        _lstChoixJoueur1.Add(_premierChoix);
-                        _lstChoixJoueur1.Add(_deuxiemeChoix);
-                    }
-                    else
-                    {
-                        _pointageJ2++;
-                        _lstChoixSysteme.Add(_premierChoix);
-                        _lstChoixSysteme.Add(_deuxiemeChoix);
-                    }
-                    lblEtat.Content = ((_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " marque un point!");
-                    _premierChoix = 0;
-                    _deuxiemeChoix = 0;
-                    ChangementTour();
-                }
-                //Fin de partie
-                else
-                {
-                    ArretJeu();
-                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
-                }
+                MatchCartes();
             }
 
             //Différentes cartes
             else if (_premierChoix != 0 && _deuxiemeChoix != 0)
             {
-                lblEtat.Content = "";
-                //Désactive les boutons
-                ArretJeu();
-                #region MÉLANGE 35
-                if (_premierChoix == 35 || _deuxiemeChoix == 35)
-                {
-                    lblEtat.Content = ("MÉLANGE: Le jeu se mélange!");
-                    _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
-                    MelangeCarte();
-                }
-                #endregion
-                #region MAUDITE 30
-                if (_premierChoix == 30 || _deuxiemeChoix == 30)
-                {
-                    lblEtat.Content = ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
-                    if (_bTourJ1 && _pointageJ1 > 0)
-                        _pointageJ1--;
-                    else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
-                        _pointageJ2--;
-                    MelangeCarte();
-                }
-                #endregion
-                #region MAUDITE 31
-                if (_premierChoix == 31 || _deuxiemeChoix == 31)
-                {
-                    lblEtat.Content = ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
-                    if (_bTourJ1 && _pointageJ1 > 0)
-                        _pointageJ1--;
-                    else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
-                        _pointageJ2--;
-                    MelangeCarte();
-                }
-                #endregion
-                await Task.Delay(1000);
-                {
-                    foreach (Button item in Jeu.Children)
-                    {
-                        //Retourne les cartes
-                        if (item.Name == _btn1)
-                            item.Background = RecevoirCarteDefaut();
-
-                        if (item.Name == _btn2)
-                            item.Background = RecevoirCarteDefaut();
-                    }
-
-                };
-                #region JOKER 34
-                if (_premierChoix == 34)
-                {
-                    lblEtat.Content = ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
-                    foreach (Button item in Jeu.Children)
-                    {
-                        if (item.Name == _btn1)
-                        {
-                            item.IsEnabled = false;
-                            break;
-                        }
-                    }
-                    _lstImages.Remove(_premierChoix);
-                }
-                else if (_deuxiemeChoix == 34)
-                {
-                    foreach (Button item in Jeu.Children)
-                    {
-                        if (item.Name == _btn2)
-                        {
-                            item.IsEnabled = false;
-                            break;
-                        }
-                    }
-                    _lstImages.Remove(_deuxiemeChoix);
-                }
-                #endregion
-                else
-                    ChangementTour();
-                //Active les boutons
-                ActivationJeu();
-                _premierChoix = 0;
-                _deuxiemeChoix = 0;
-
+                await DifferentesCartes();
             }
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
             //Tour de l'ordinateur
-            if (_bTourSysteme)
+            if (_bTourSysteme && !_bFinDePartie)
                 ChoixOrdinateur();
         }
+
+        private void MatchCartes()
+        {
+            lblEtat.Content = "";
+
+
+            //Retire les deux cartes
+            _lstImages.Remove(_premierChoix);
+            _lstImages.Remove(_deuxiemeChoix);
+
+            //Désactive les boutons qui match
+            foreach (Button item in Jeu.Children)
+            {
+                if (item.Name == _btn1)
+                    item.IsEnabled = false;
+                if (item.Name == _btn2)
+                    item.IsEnabled = false;
+            }
+            //Gain de point
+            if (_bTourJ1)
+            {
+                _pointageJ1++;
+                _lstChoixJoueur1.Add(_premierChoix);
+                _lstChoixJoueur1.Add(_deuxiemeChoix);
+            }
+            else
+            {
+                _pointageJ2++;
+                _lstChoixSysteme.Add(_premierChoix);
+                _lstChoixSysteme.Add(_deuxiemeChoix);
+            }
+            lblEtat.Content = ((_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " marque un point!");
+            _premierChoix = 0;
+            _deuxiemeChoix = 0;
+            DetectionFinDeJeu();
+            if (!_bFinDePartie)
+            {
+                ChangementTour();
+            }
+            //Fin de partie
+            else
+            {
+                ArretJeu();
+                MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
+            }
+        }
+
+        private async Task DifferentesCartes()
+        {
+            lblEtat.Content = "";
+            //Désactive les boutons
+            ArretJeu();
+            #region MÉLANGE 35
+            if (_premierChoix == 35 || _deuxiemeChoix == 35)
+            {
+                lblEtat.Content += ("MÉLANGE: Le jeu se mélange!");
+                _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
+                MelangeCarte();
+            }
+            #endregion
+            #region MAUDITE 30
+            if (_premierChoix == 30 || _deuxiemeChoix == 30)
+            {
+                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
+                if (_bTourJ1 && _pointageJ1 > 0)
+                    _pointageJ1--;
+                else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
+                    _pointageJ2--;
+                MelangeCarte();
+            }
+            #endregion
+            #region MAUDITE 31
+            if (_premierChoix == 31 || _deuxiemeChoix == 31)
+            {
+                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
+                if (_bTourJ1 && _pointageJ1 > 0)
+                    _pointageJ1--;
+                else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
+                    _pointageJ2--;
+                MelangeCarte();
+            }
+            #endregion
+            await Task.Delay(1000);
+            {
+                foreach (Button item in Jeu.Children)
+                {
+                    //Retourne les cartes
+                    if (item.Name == _btn1)
+                        item.Background = RecevoirCarteDefaut();
+
+                    if (item.Name == _btn2)
+                        item.Background = RecevoirCarteDefaut();
+                }
+
+            };
+            #region JOKER 34
+            if (_premierChoix == 34)
+            {
+                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
+                foreach (Button item in Jeu.Children)
+                {
+                    if (item.Name == _btn1)
+                    {
+                        item.IsEnabled = false;
+                        break;
+                    }
+                }
+                _lstImages.Remove(_premierChoix);
+            }
+            else if (_deuxiemeChoix == 34)
+            {
+                foreach (Button item in Jeu.Children)
+                {
+                    if (item.Name == _btn2)
+                    {
+                        item.IsEnabled = false;
+                        break;
+                    }
+                }
+                _lstImages.Remove(_deuxiemeChoix);
+            }
+            #endregion
+            else
+                ChangementTour();
+            //Active les boutons
+            ActivationJeu();
+            _premierChoix = 0;
+            _deuxiemeChoix = 0;
+        }
+
+
         #region Boutons
         private void chk8x8_Checked(object sender, RoutedEventArgs e)
         {
@@ -313,6 +319,8 @@ namespace JeuDeMemo
                 //Tour de jeu
                 if (chkJoueur1.IsChecked == true)
                     _bContreSysteme = true;
+                else
+                    _bContreSysteme = false;
                 if (chkDebut1.IsChecked == true)
                     _bTourJ1 = true;
                 else if (chkJoueur2.IsChecked == true && _bContreSysteme == false)
@@ -433,6 +441,16 @@ namespace JeuDeMemo
             }
             else
             {
+                if (_bTourJ1)
+                {
+                    lblJ1Point.Background = Brushes.White;
+                    lblJ2Point.Background = Brushes.Red;
+                }
+                else
+                {
+                    lblJ1Point.Background = Brushes.Red;
+                    lblJ2Point.Background = Brushes.White;
+                }
                 _bTourJ1 = !_bTourJ1;
                 _bTourJ2 = !_bTourJ2;
             }
@@ -493,6 +511,21 @@ namespace JeuDeMemo
                     item.Tag = _lstImages[i];
                     ++i;
                 }
+            }
+        }
+        private void DetectionFinDeJeu()
+        {
+            int iDetectionFin = 0;
+            for (int x = 1; x <= 29; x++)
+            {
+                if (_lstImages.Contains(x))
+                {
+                    iDetectionFin++;
+                }
+            }
+            if (iDetectionFin == 0)
+            {
+                _bFinDePartie = true;
             }
         }
     }
