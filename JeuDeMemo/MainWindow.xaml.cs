@@ -188,6 +188,7 @@ namespace JeuDeMemo
             }
             else if (_deuxiemeChoix == 34)
             {
+                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
                 foreach (Button item in Jeu.Children)
                 {
                     if (item.Name == _btn2)
