@@ -56,8 +56,8 @@ namespace JeuDeMemo
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
 
-            //Match des cartes (empêche l'erreur de 2 cartes mélanges)
-            if (_premierChoix == _deuxiemeChoix && (_premierChoix != 35 && _deuxiemeChoix != 35) && _premierChoix != 32 && _premierChoix != 33 && _deuxiemeChoix != 32 && _deuxiemeChoix != 33)
+            //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
+            if (_premierChoix == _deuxiemeChoix && _premierChoix != 35 && _premierChoix != 32 && _premierChoix != 33 )
             {
                 MatchCartes();
             }
@@ -116,7 +116,11 @@ namespace JeuDeMemo
             else
             {
                 ArretJeu();
-                MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
+                Jeu.IsEnabled = false;
+                if (_pointageJ1 != _pointageJ2)
+                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
+                else
+                    MessageBox.Show("Il y a égalité");
             }
         }
 
@@ -282,7 +286,7 @@ namespace JeuDeMemo
                 }
                 if (_bGrandeur == 9)
                 {
-                    for (int i = 1; i < 9; i++)
+                    for (int i = 1; i <= 8; i++)
                     {
                         _lstImages.Add(i);
                         _lstImages.Add(i);
