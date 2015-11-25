@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Resources;
-using System.Windows.Shapes;
-using System.Threading;
-using System.Windows.Threading;
-using System.Reflection;
-using System.Windows.Controls.Primitives;
 
 namespace JeuDeMemo
 {
@@ -39,7 +29,7 @@ namespace JeuDeMemo
         string _btn1;
         string _btn2;
         bool _bTheme = false; //false = fruit      true = voiture
-
+        MediaPlayer _player = new MediaPlayer();
         List<int> _lstImages = new List<int>();
         Random rand = new Random();
         List<int> _lstChoixSysteme = new List<int>();
@@ -77,7 +67,7 @@ namespace JeuDeMemo
         private void MatchCartes()
         {
             lblEtat.Content = "";
-
+            SonTournerCarte(3);
 
             //Retire les deux cartes
             _lstImages.Remove(_premierChoix);
@@ -115,6 +105,7 @@ namespace JeuDeMemo
             //Fin de partie
             else
             {
+                SonTournerCarte(2);
                 ArretJeu();
                 Jeu.IsEnabled = false;
                 if (_pointageJ1 != _pointageJ2)
@@ -140,6 +131,7 @@ namespace JeuDeMemo
             #region MAUDITE 30
             if (_premierChoix == 30 || _deuxiemeChoix == 30)
             {
+                SonTournerCarte(30);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
                 if (_bTourJ1 && _pointageJ1 > 0)
                     _pointageJ1--;
@@ -151,6 +143,7 @@ namespace JeuDeMemo
             #region MAUDITE 31
             if (_premierChoix == 31 || _deuxiemeChoix == 31)
             {
+                SonTournerCarte(31);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
                 if (_bTourJ1 && _pointageJ1 > 0)
                     _pointageJ1--;
@@ -175,6 +168,7 @@ namespace JeuDeMemo
             #region JOKER 34
             if (_premierChoix == 34)
             {
+                SonTournerCarte(34);
                 lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
                 foreach (Button item in Jeu.Children)
                 {
@@ -188,6 +182,7 @@ namespace JeuDeMemo
             }
             else if (_deuxiemeChoix == 34)
             {
+                SonTournerCarte(34);
                 lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
                 foreach (Button item in Jeu.Children)
                 {
@@ -343,6 +338,7 @@ namespace JeuDeMemo
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
+            SonTournerCarte(1);
             if (!_bTourSysteme)
             {
                 int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
@@ -374,6 +370,10 @@ namespace JeuDeMemo
             _premierChoix = 0;
             _pointageJ1 = 0;
             _pointageJ2 = 0;
+            txtPointJ1.Text = "0";
+            txtPointJ2.Text = "0";
+            lblJ1Point.Background = Brushes.White;
+            lblJ2Point.Background = Brushes.White;
             List<int> _lstImages = new List<int>();
             List<int> _lstRandom = new List<int>();
         }
@@ -532,6 +532,20 @@ namespace JeuDeMemo
             {
                 _bFinDePartie = true;
             }
+        }
+        private void SonTournerCarte(int idCarte)
+        {
+            if(idCarte == 1)
+                _player.Open(new Uri("Sounds/card-flip.wav", UriKind.Relative));
+            else if(idCarte == 30 || idCarte == 31)
+                _player.Open(new Uri("Sounds/evil-laugh.wav", UriKind.Relative));
+            else if (idCarte == 34)
+                _player.Open(new Uri("Sounds/joker.wav", UriKind.Relative));
+            else if (idCarte == 2)
+                _player.Open(new Uri("Sounds/percussion-choir-final.wav", UriKind.Relative));
+            else if (idCarte == 3)
+                _player.Open(new Uri("Sounds/point.mp3", UriKind.Relative));
+            _player.Play();
         }
     }
 }
