@@ -15,6 +15,7 @@ namespace JeuDeMemo
     /// </summary>
     public partial class MainWindow : Window
     {
+        Model context = new Model();
         //Tours
         bool _bTourSysteme = false;
         bool _bContreSysteme = false;
@@ -45,7 +46,6 @@ namespace JeuDeMemo
         {
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
-
             //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
             if (_premierChoix == _deuxiemeChoix && _premierChoix != 35 && _premierChoix != 32 && _premierChoix != 33 )
             {
@@ -94,7 +94,7 @@ namespace JeuDeMemo
                 _lstChoixSysteme.Add(_premierChoix);
                 _lstChoixSysteme.Add(_deuxiemeChoix);
             }
-            lblEtat.Content = ((_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " marque un point!");
+            lblEtat.Content = ((_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " marque un point!");
             _premierChoix = 0;
             _deuxiemeChoix = 0;
             DetectionFinDeJeu();
@@ -109,7 +109,7 @@ namespace JeuDeMemo
                 ArretJeu();
                 Jeu.IsEnabled = false;
                 if (_pointageJ1 != _pointageJ2)
-                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? lblJ1Point.Content : lblJ2Point.Content) + "!");
+                    MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? txtNomJ1.Text : txtNomJ2.Text) + "!");
                 else
                     MessageBox.Show("Il y a égalité");
             }
@@ -123,6 +123,7 @@ namespace JeuDeMemo
             #region MÉLANGE 35
             if (_premierChoix == 35 || _deuxiemeChoix == 35)
             {
+                SonTournerCarte(35);
                 lblEtat.Content += ("MÉLANGE: Le jeu se mélange!");
                 _lstImages = _lstImages.OrderBy(c => rand.Next()).Select(c => c).ToList();
                 MelangeCarte();
@@ -132,7 +133,7 @@ namespace JeuDeMemo
             if (_premierChoix == 30 || _deuxiemeChoix == 30)
             {
                 SonTournerCarte(30);
-                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
+                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
                 if (_bTourJ1 && _pointageJ1 > 0)
                     _pointageJ1--;
                 else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
@@ -144,7 +145,7 @@ namespace JeuDeMemo
             if (_premierChoix == 31 || _deuxiemeChoix == 31)
             {
                 SonTournerCarte(31);
-                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " perd 1 point et le jeu se mélange!");
+                lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
                 if (_bTourJ1 && _pointageJ1 > 0)
                     _pointageJ1--;
                 else if ((_bTourJ2 || _bTourSysteme) && _pointageJ2 > 0)
@@ -169,7 +170,7 @@ namespace JeuDeMemo
             if (_premierChoix == 34)
             {
                 SonTournerCarte(34);
-                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
+                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " peut rejouer!");
                 foreach (Button item in Jeu.Children)
                 {
                     if (item.Name == _btn1)
@@ -183,7 +184,7 @@ namespace JeuDeMemo
             else if (_deuxiemeChoix == 34)
             {
                 SonTournerCarte(34);
-                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? lblJ1Point.Content : lblJ2Point.Content) + " peut rejouer!");
+                lblEtat.Content += ("JOKER: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " peut rejouer!");
                 foreach (Button item in Jeu.Children)
                 {
                     if (item.Name == _btn2)
@@ -219,7 +220,7 @@ namespace JeuDeMemo
         {
             chkJoueur2.IsChecked = false;
             lblJ2.Content = "Système";
-            lblJ2Point.Content = "Système";
+            txtNomJ2.Text = "Système";
 
         }
 
@@ -227,7 +228,7 @@ namespace JeuDeMemo
         {
             chkJoueur1.IsChecked = false;
             lblJ2.Content = "Joueur 2";
-            lblJ2Point.Content = "Joueur 2";
+            txtNomJ2.Text = "Joueur 2";
         }
 
         private void chkFruits_Checked(object sender, RoutedEventArgs e)
@@ -254,6 +255,8 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
+            
+            
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
                 btnRecommencer.IsEnabled = true;
@@ -330,6 +333,8 @@ namespace JeuDeMemo
                     _bTourSysteme = true;
                     ChoixOrdinateur();
                 }
+                txtNomJ1.IsReadOnly = true;
+                txtNomJ2.IsReadOnly = true;
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
@@ -360,6 +365,7 @@ namespace JeuDeMemo
 
         private void btnRecommencer_Click(object sender, RoutedEventArgs e)
         {
+            ArretJeu();
             this.Jeu.Children.Clear();
             btnDemarrer.IsEnabled = true;
             Options.IsEnabled = true;
@@ -370,12 +376,16 @@ namespace JeuDeMemo
             _premierChoix = 0;
             _pointageJ1 = 0;
             _pointageJ2 = 0;
+            //Textboxes
             txtPointJ1.Text = "0";
             txtPointJ2.Text = "0";
-            lblJ1Point.Background = Brushes.White;
-            lblJ2Point.Background = Brushes.White;
+            txtNomJ1.Background = Brushes.White;
+            txtNomJ2.Background = Brushes.White;
             List<int> _lstImages = new List<int>();
             List<int> _lstRandom = new List<int>();
+            //Nom des joueurs
+            txtNomJ1.IsReadOnly = false;
+            txtNomJ2.IsReadOnly = false;
         }
         #endregion
         private ImageBrush RecevoirInfoBouton(int tagBouton)
@@ -434,13 +444,13 @@ namespace JeuDeMemo
                 _bTourJ1 = !_bTourJ1;
                 if (_bTourJ1)
                 {
-                    lblJ1Point.Background = Brushes.Red;
-                    lblJ2Point.Background = Brushes.White;
+                    txtNomJ1.Background = Brushes.Red;
+                    txtNomJ2.Background = Brushes.White;
                 }
                 else
                 {
-                    lblJ1Point.Background = Brushes.White;
-                    lblJ2Point.Background = Brushes.Red;
+                    txtNomJ1.Background = Brushes.White;
+                    txtNomJ2.Background = Brushes.Red;
                 }
 
             }
@@ -448,13 +458,13 @@ namespace JeuDeMemo
             {
                 if (_bTourJ1)
                 {
-                    lblJ1Point.Background = Brushes.White;
-                    lblJ2Point.Background = Brushes.Red;
+                    txtNomJ1.Background = Brushes.White;
+                    txtNomJ2.Background = Brushes.Red;
                 }
                 else
                 {
-                    lblJ1Point.Background = Brushes.Red;
-                    lblJ2Point.Background = Brushes.White;
+                    txtNomJ1.Background = Brushes.Red;
+                    txtNomJ2.Background = Brushes.White;
                 }
                 _bTourJ1 = !_bTourJ1;
                 _bTourJ2 = !_bTourJ2;
@@ -462,6 +472,7 @@ namespace JeuDeMemo
         }
         private async void ChoixOrdinateur()
         {
+            ArretJeu();
             //Construit une liste des boutons disponibles
             List<Button> lstBoutonDisponible = new List<Button>();
             foreach (Button item in Jeu.Children)
@@ -538,9 +549,11 @@ namespace JeuDeMemo
             if(idCarte == 1)
                 _player.Open(new Uri("Sounds/card-flip.wav", UriKind.Relative));
             else if(idCarte == 30 || idCarte == 31)
-                _player.Open(new Uri("Sounds/evil-laugh.wav", UriKind.Relative));
+                _player.Open(new Uri("Sounds/evil-laugh.mp3", UriKind.Relative));
             else if (idCarte == 34)
                 _player.Open(new Uri("Sounds/joker.wav", UriKind.Relative));
+            else if (idCarte == 35)
+                _player.Open(new Uri("Sounds/melange.mp3", UriKind.Relative));
             else if (idCarte == 2)
                 _player.Open(new Uri("Sounds/percussion-choir-final.wav", UriKind.Relative));
             else if (idCarte == 3)

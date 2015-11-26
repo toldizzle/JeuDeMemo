@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JeuDeMemo"
         mc:Ignorable="d"
-        Title="Jeu de mémoire" Height="723.593" Width="590.811" ResizeMode="NoResize">
+        Title="Jeu de mémoire" Height="723.593" Width="590.811" ResizeMode="NoResize" Icon="Images/Cartes/HLion.png" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,4,-4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -36,12 +36,13 @@
             <Label x:Name="lblJ2" Content="joueur2" HorizontalAlignment="Left" Margin="196,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="91" Margin="328,10,0,0" VerticalAlignment="Top" Width="241">
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="92" VerticalAlignment="Top" Width="241" Margin="0,0,0,-32"/>
-            <Label x:Name="lblJ1Point" Content="Joueur 1" Margin="21,33,159,27" FontFamily="Narkisim"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="92" VerticalAlignment="Top" Width="241" Margin="0,0,0,-32">
+            </Border>
+            <TextBox x:Name="txtNomJ1" TextWrapping="Wrap" Text="Joueur 1" Margin="16,27,122,38"/>
+            <TextBox x:Name="txtNomJ2" TextWrapping="Wrap" Text="Joueur 2" Margin="124,27,13,38"/>
             <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667"/>
-            <Label x:Name="lblJ2Point" Content="Joueur 2" Margin="158,33,22,27" FontFamily="Narkisim"/>
-            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="21,59,159,12" FontFamily="Narkisim"/>
-            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="158,59,22,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="38,59,142,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="146,59,34,12" FontFamily="Narkisim"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="503" Margin="10,176,0,0" VerticalAlignment="Top" Width="571">
 
