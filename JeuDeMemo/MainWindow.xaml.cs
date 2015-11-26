@@ -21,8 +21,7 @@ namespace JeuDeMemo
         bool _bContreSysteme = false;
         bool _bTourJ1 = false;
         bool _bTourJ2 = false;
-        int _pointageJ1 = 0;
-        int _pointageJ2 = 0;
+        
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
@@ -33,10 +32,20 @@ namespace JeuDeMemo
         MediaPlayer _player = new MediaPlayer();
         List<int> _lstImages = new List<int>();
         Random rand = new Random();
-        List<int> _lstChoixSysteme = new List<int>();
-        List<int> _lstChoixJoueur1 = new List<int>();
+        
 
         bool _bFinDePartie = false;
+
+        //Base de données
+        List<string> _lstChoixSysteme = new List<string>();
+        List<string> _lstChoixJoueur1 = new List<string>();
+        int _pointageJ1 = 0;
+        int _pointageJ2 = 0;
+        string _prenomJ1 = "";
+        string _nomJ1 = "";
+        string _prenomJ2 = "";
+        string _nomJ2 = "";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -85,14 +94,14 @@ namespace JeuDeMemo
             if (_bTourJ1)
             {
                 _pointageJ1++;
-                _lstChoixJoueur1.Add(_premierChoix);
-                _lstChoixJoueur1.Add(_deuxiemeChoix);
+                _lstChoixJoueur1.Add(_btn1);
+                _lstChoixJoueur1.Add(_btn2);
             }
             else
             {
                 _pointageJ2++;
-                _lstChoixSysteme.Add(_premierChoix);
-                _lstChoixSysteme.Add(_deuxiemeChoix);
+                _lstChoixSysteme.Add(_btn1);
+                _lstChoixSysteme.Add(_btn2);
             }
             lblEtat.Content = ((_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " marque un point!");
             _premierChoix = 0;
@@ -255,23 +264,18 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+
+            InputBox.Visibility = System.Windows.Visibility.Visible;
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
                 btnRecommencer.IsEnabled = true;
-
                 Options.IsEnabled = false;
                 btnDemarrer.IsEnabled = false;
 
                 if (chk8x8.IsChecked == true)
-                {
                     _bGrandeur = 8;
-                }
                 else
-                {
                     _bGrandeur = 9;
-                }
 
                 //1 à 29 pour les cartes, 30-31 pour maudites, 32-33 pour unique, 34 joker,35 aléatoire,
                 for (int x = 1; x <= 29; x++)
@@ -333,8 +337,7 @@ namespace JeuDeMemo
                     _bTourSysteme = true;
                     ChoixOrdinateur();
                 }
-                txtNomJ1.IsReadOnly = true;
-                txtNomJ2.IsReadOnly = true;
+
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
@@ -346,6 +349,7 @@ namespace JeuDeMemo
             SonTournerCarte(1);
             if (!_bTourSysteme)
             {
+                _lstChoixJoueur1.Add((sender as Button).Name);
                 int iTag = int.Parse(string.Format("{0}", (sender as Button).Tag));
                 if (_premierChoix == 0)
                 {
@@ -366,6 +370,10 @@ namespace JeuDeMemo
         private void btnRecommencer_Click(object sender, RoutedEventArgs e)
         {
             ArretJeu();
+            _prenomJ1 = "";
+            _nomJ1 = "";
+            _prenomJ2 = "";
+            _nomJ2 = "";
             this.Jeu.Children.Clear();
             btnDemarrer.IsEnabled = true;
             Options.IsEnabled = true;
@@ -383,9 +391,12 @@ namespace JeuDeMemo
             txtNomJ2.Background = Brushes.White;
             List<int> _lstImages = new List<int>();
             List<int> _lstRandom = new List<int>();
-            //Nom des joueurs
-            txtNomJ1.IsReadOnly = false;
-            txtNomJ2.IsReadOnly = false;
+
+            //Liste des choix
+            _lstChoixJoueur1 = new List<string>();
+            _lstChoixSysteme = new List<string>();
+            InputBox.Visibility = System.Windows.Visibility.Visible;
+
         }
         #endregion
         private ImageBrush RecevoirInfoBouton(int tagBouton)
@@ -502,6 +513,7 @@ namespace JeuDeMemo
                         int iTag = int.Parse(string.Format("{0}", item.Tag));
                         item.Background = RecevoirInfoBouton(iTag);
                         _premierChoix = iTag;
+                        _lstChoixSysteme.Add(_btn1);
                     }
                 }
                 if (item.Name == _btn2)
@@ -511,8 +523,10 @@ namespace JeuDeMemo
                         int iTag = int.Parse(string.Format("{0}", item.Tag));
                         item.Background = RecevoirInfoBouton(iTag);
                         _deuxiemeChoix = iTag;
+                        _lstChoixSysteme.Add(_btn2);
                     }
                 }
+                
             }
             JeuMemoire();
         }
@@ -559,6 +573,23 @@ namespace JeuDeMemo
             else if (idCarte == 3)
                 _player.Open(new Uri("Sounds/point.mp3", UriKind.Relative));
             _player.Play();
+        }
+        private void ConfirmerButton_Click(object sender, RoutedEventArgs e)
+        {
+            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+            
+            _prenomJ1 = txtJ1Prenom.Text;
+            _nomJ1 = txtJ1Nom.Text;
+            if(!_bContreSysteme)
+            {
+                txtInputJ2.Visibility = Visibility.Visible;
+                txtJ2Nom.Visibility = Visibility.Visible;
+                txtJ2Prenom.Visibility = Visibility.Visible;
+                _nomJ2 = txtJ2Nom.Text;
+                _prenomJ2 = txtJ2Prenom.Text;
+            }
+            //// Clear InputBox.
+            //txtJ1InputNom.Text = String.Empty;
         }
     }
 }

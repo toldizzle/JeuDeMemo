@@ -38,8 +38,8 @@
         <Grid HorizontalAlignment="Left" Height="91" Margin="328,10,0,0" VerticalAlignment="Top" Width="241">
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="92" VerticalAlignment="Top" Width="241" Margin="0,0,0,-32">
             </Border>
-            <TextBox x:Name="txtNomJ1" TextWrapping="Wrap" Text="Joueur 1" Margin="16,27,122,38"/>
-            <TextBox x:Name="txtNomJ2" TextWrapping="Wrap" Text="Joueur 2" Margin="124,27,13,38"/>
+            <TextBox x:Name="txtNomJ1" TextWrapping="Wrap" Text="Joueur 1" Margin="16,27,122,38" IsReadOnly="True"/>
+            <TextBox x:Name="txtNomJ2" TextWrapping="Wrap" Text="Joueur 2" Margin="124,27,13,38" IsReadOnly="True"/>
             <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667"/>
             <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="38,59,142,12" FontFamily="Narkisim"/>
             <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="146,59,34,12" FontFamily="Narkisim"/>
@@ -52,5 +52,29 @@
         <Button x:Name="btnDemarrer" Content="Démarrer" HorizontalAlignment="Left" Margin="328,126,0,0" VerticalAlignment="Top" Width="75" Click="btnDemarrer_Click" Height="22"/>
         <Button x:Name="btnRecommencer" Content="Recommencer" HorizontalAlignment="Left" Margin="483,126,0,0" VerticalAlignment="Top" Width="86" Click="btnRecommencer_Click" IsEnabled="False" Height="22"/>
         <Label x:Name="lblEtat" Content="" HorizontalAlignment="Left" Margin="0,153,0,0" VerticalAlignment="Top" Width="581" HorizontalContentAlignment="Center"/>
+       
+        <Grid x:Name="InputBox" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+            MinWidth="350"
+            Background="White" 
+            BorderBrush="Black" 
+            BorderThickness="1" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Joueur 1:" FontWeight="Bold" FontFamily="Cambria"/>
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Nom" Text="Nom"/>
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Prenom" Text="Prenom"/>
+                    <TextBlock Margin="5" Text="Joueur 2:" FontWeight="Bold" FontFamily="Cambria" Visibility="Hidden" Name="txtInputJ2"/>
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Nom" Text="Nom" Visibility="Hidden"/>
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Prenom" Text="Prenom" Visibility="Hidden"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="Confirmer" Margin="5" Content="Confirmer" Background="{x:Null}" Click="ConfirmerButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </Border>
+        </Grid>
     </Grid>
 </Window>
