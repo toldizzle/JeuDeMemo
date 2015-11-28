@@ -32,8 +32,6 @@ namespace JeuDeMemo
         MediaPlayer _player = new MediaPlayer();
         List<int> _lstImages = new List<int>();
         Random rand = new Random();
-        
-
         bool _bFinDePartie = false;
 
         //Base de données
@@ -49,10 +47,27 @@ namespace JeuDeMemo
         public MainWindow()
         {
             InitializeComponent();
-
         }
         public async void JeuMemoire()
         {
+            ////Test de BD
+            //string combinaison = "";
+            //for (int i = 0; i < _lstChoixJoueur1.Count; i++)
+            //{
+            //    combinaison += " " + _lstChoixJoueur1[i];
+            //}
+            //Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
+            //Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count() };
+            //Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() + 1 };
+            //Etat etat = new Etat { nomEtat = _prenomJ1 + _nomJ1, idEtat = context.Etat.Count() };
+            //Jouer jouer = new Jouer { listeCombine = combinaison, Etat = etat, Partie = partie, Utilisateur = utilisateur1 };
+            //context.Partie.Add(partie);
+            //context.Utilisateur.Add(utilisateur1);
+            //context.Utilisateur.Add(utilisateur2);
+            //context.Etat.Add(etat);
+            //context.Jouer.Add(jouer);
+            //context.SaveChanges();
+
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
             //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
