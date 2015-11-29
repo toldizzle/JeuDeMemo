@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -50,24 +51,6 @@ namespace JeuDeMemo
         }
         public async void JeuMemoire()
         {
-            ////Test de BD
-            //string combinaison = "";
-            //for (int i = 0; i < _lstChoixJoueur1.Count; i++)
-            //{
-            //    combinaison += " " + _lstChoixJoueur1[i];
-            //}
-            //Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
-            //Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count() };
-            //Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() + 1 };
-            //Etat etat = new Etat { nomEtat = _prenomJ1 + _nomJ1, idEtat = context.Etat.Count() };
-            //Jouer jouer = new Jouer { listeCombine = combinaison, Etat = etat, Partie = partie, Utilisateur = utilisateur1 };
-            //context.Partie.Add(partie);
-            //context.Utilisateur.Add(utilisateur1);
-            //context.Utilisateur.Add(utilisateur2);
-            //context.Etat.Add(etat);
-            //context.Jouer.Add(jouer);
-            //context.SaveChanges();
-
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
             //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
@@ -130,12 +113,32 @@ namespace JeuDeMemo
             else
             {
                 SonTournerCarte(2);
-                ArretJeu();
                 Jeu.IsEnabled = false;
+                ////Test de BD
+                string combinaison1 = "";
+                for (int i = 0; i < _lstChoixJoueur1.Count; i++)
+                {
+                    combinaison1 += " " + _lstChoixJoueur1[i];
+                }
+                for (int i = 0; i < _lstChoixSysteme.Count; i++)
+                {
+                    combinaison1 += " " + _lstChoixSysteme[i];
+                }
+                Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
+                Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count() };
+                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() + 1 };
+                Etat etat = new Etat { nomEtat = _prenomJ1 + _nomJ1, idEtat = context.Etat.Count() };
+                Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser, Etat = etat, Partie = partie, Utilisateur = utilisateur1 };
+                context.Partie.Add(partie);
+                context.Utilisateur.AddOrUpdate(utilisateur1);
+                context.Utilisateur.AddOrUpdate(utilisateur2);
+                context.Etat.Add(etat);
+                context.Jouer.Add(jouer);
+                context.SaveChanges();
                 if (_pointageJ1 != _pointageJ2)
                     MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? txtNomJ1.Text : txtNomJ2.Text) + "!");
                 else
-                    MessageBox.Show("Il y a égalité");
+                    MessageBox.Show("Le vainqueur est: " + (_lstChoixJoueur1.Count < _lstChoixSysteme.Count ? txtNomJ1.Text : txtNomJ2.Text) + "!");
             }
         }
 
@@ -145,7 +148,7 @@ namespace JeuDeMemo
             //Désactive les boutons
             ArretJeu();
             #region MÉLANGE 35
-            if (_premierChoix == 35 || _deuxiemeChoix == 35 && (_premierChoix != 34 || _deuxiemeChoix != 34))
+            if (_premierChoix == 35 || _deuxiemeChoix == 35 && (_premierChoix != 34 && _deuxiemeChoix != 34))
             {
                 SonTournerCarte(35);
                 lblEtat.Content += ("MÉLANGE: Le jeu se mélange!");
@@ -154,7 +157,7 @@ namespace JeuDeMemo
             }
             #endregion
             #region MAUDITE 30
-            if (_premierChoix == 30 || _deuxiemeChoix == 30 && (_premierChoix != 34 || _deuxiemeChoix != 34))
+            if (_premierChoix == 30 || _deuxiemeChoix == 30 && (_premierChoix != 34 && _deuxiemeChoix != 34))
             {
                 SonTournerCarte(30);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
@@ -166,7 +169,7 @@ namespace JeuDeMemo
             }
             #endregion
             #region MAUDITE 31
-            if (_premierChoix == 31 || _deuxiemeChoix == 31 && (_premierChoix != 34 || _deuxiemeChoix != 34))
+            if (_premierChoix == 31 || _deuxiemeChoix == 31 && (_premierChoix != 34 && _deuxiemeChoix != 34))
             {
                 SonTournerCarte(31);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
@@ -472,6 +475,7 @@ namespace JeuDeMemo
                 {
                     txtNomJ1.Background = Brushes.Red;
                     txtNomJ2.Background = Brushes.White;
+                    ActivationJeu();
                 }
                 else
                 {
@@ -602,6 +606,11 @@ namespace JeuDeMemo
                 txtJ2Prenom.Visibility = Visibility.Visible;
                 _nomJ2 = txtJ2Nom.Text;
                 _prenomJ2 = txtJ2Prenom.Text;
+            }
+            else
+            {
+                _nomJ2 = "Système";
+                _prenomJ2 = "Système";
             }
             //// Clear InputBox.
             //txtJ1InputNom.Text = String.Empty;
