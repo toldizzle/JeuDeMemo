@@ -145,7 +145,7 @@ namespace JeuDeMemo
             //Désactive les boutons
             ArretJeu();
             #region MÉLANGE 35
-            if (_premierChoix == 35 || _deuxiemeChoix == 35)
+            if (_premierChoix == 35 || _deuxiemeChoix == 35 && (_premierChoix != 34 || _deuxiemeChoix != 34))
             {
                 SonTournerCarte(35);
                 lblEtat.Content += ("MÉLANGE: Le jeu se mélange!");
@@ -154,7 +154,7 @@ namespace JeuDeMemo
             }
             #endregion
             #region MAUDITE 30
-            if (_premierChoix == 30 || _deuxiemeChoix == 30)
+            if (_premierChoix == 30 || _deuxiemeChoix == 30 && (_premierChoix != 34 || _deuxiemeChoix != 34))
             {
                 SonTournerCarte(30);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
@@ -166,7 +166,7 @@ namespace JeuDeMemo
             }
             #endregion
             #region MAUDITE 31
-            if (_premierChoix == 31 || _deuxiemeChoix == 31)
+            if (_premierChoix == 31 || _deuxiemeChoix == 31 && (_premierChoix != 34 || _deuxiemeChoix != 34))
             {
                 SonTournerCarte(31);
                 lblEtat.Content += ("MAUDITE: " + (_bTourJ1 ? txtNomJ1.Text : txtNomJ2.Text) + " perd 1 point et le jeu se mélange!");
