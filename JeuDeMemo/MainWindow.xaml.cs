@@ -459,7 +459,6 @@ namespace JeuDeMemo
             //Liste des choix
             _lstChoixJoueur1 = new List<string>();
             _lstChoixSysteme = new List<string>();
-            InputBox.Visibility = System.Windows.Visibility.Visible;
 
         }
         #endregion
