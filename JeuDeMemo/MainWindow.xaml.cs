@@ -22,7 +22,7 @@ namespace JeuDeMemo
         bool _bContreSysteme = false;
         bool _bTourJ1 = false;
         bool _bTourJ2 = false;
-        
+
         byte _bGrandeur = 0;
         int _premierChoix = 0;
         int _deuxiemeChoix = 0;
@@ -51,10 +51,11 @@ namespace JeuDeMemo
         }
         public async void JeuMemoire()
         {
+
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
             //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
-            if (_premierChoix == _deuxiemeChoix && _premierChoix != 35 && _premierChoix != 32 && _premierChoix != 33 )
+            if (_premierChoix == _deuxiemeChoix && _premierChoix != 35 && _premierChoix != 32 && _premierChoix != 33)
             {
                 MatchCartes();
             }
@@ -118,27 +119,72 @@ namespace JeuDeMemo
                 string combinaison1 = "";
                 for (int i = 0; i < _lstChoixJoueur1.Count; i++)
                 {
-                    combinaison1 += " " + _lstChoixJoueur1[i];
+                    combinaison1 += _lstChoixJoueur1[i] + ",";
                 }
+                string combinaison2 = "";
                 for (int i = 0; i < _lstChoixSysteme.Count; i++)
                 {
-                    combinaison1 += " " + _lstChoixSysteme[i];
+                    combinaison2 += _lstChoixSysteme[i] + ",";
                 }
                 Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
-                Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count() };
-                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() + 1 };
-                Etat etat = new Etat { nomEtat = _prenomJ1 + _nomJ1, idEtat = context.Etat.Count() };
-                Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser, Etat = etat, Partie = partie, Utilisateur = utilisateur1 };
+                Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1 };
+                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2 };
+                Etat etat;
+                Etat etat2;
+                //État
+                if (_pointageJ1 > _pointageJ2)
+                {
+                    etat = new Etat { nomEtat = "J1Gagné", idEtat = 1 };
+                    etat2 = new Etat { nomEtat = "J2Perdu", idEtat = 2 };
+                }
+                else if (_pointageJ1 < _pointageJ2)
+                {
+                    etat = new Etat { nomEtat = "J1Perdu", idEtat = 2 };
+                    etat2 = new Etat { nomEtat = "J2Gagné", idEtat = 1 };
+                }
+                else
+                {
+                    etat = new Etat { nomEtat = "J1Nul", idEtat = 3 };
+                    etat2 = new Etat { nomEtat = "J2Nul", idEtat = 3 };
+                }
                 context.Partie.Add(partie);
                 context.Utilisateur.AddOrUpdate(utilisateur1);
                 context.Utilisateur.AddOrUpdate(utilisateur2);
-                context.Etat.Add(etat);
+                context.Etat.AddOrUpdate(etat);
+                Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser };
+                Jouer jouer2 = new Jouer { listeCombine = combinaison2, idEtat = etat2.idEtat, idPartie = partie.idPartie, idUser = utilisateur2.idUser };
                 context.Jouer.Add(jouer);
                 context.SaveChanges();
-                if (_pointageJ1 != _pointageJ2)
+                var query = context.Jouer.Where(u => u.idUser == utilisateur1.idUser).Select(z => z.idEtat).First();
+                
+                if (query == 1)
                     MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? txtNomJ1.Text : txtNomJ2.Text) + "!");
-                else
+                //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur1.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur1.nomUser)) + "!");
+                else if (query == 2)
+                    //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur2.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur2.nomUser)) + "!");
                     MessageBox.Show("Le vainqueur est: " + (_lstChoixJoueur1.Count < _lstChoixSysteme.Count ? txtNomJ1.Text : txtNomJ2.Text) + "!");
+                else if (query == 3)
+                {
+                    //Liste des combinaisons
+                    var listeCombi1 = context.Jouer.Where(u => u.idUser == utilisateur1.idUser).Select(l => l.listeCombine).First();
+                    var listeCombi2 = context.Jouer.Where(u => u.idUser == utilisateur2.idUser).Select(l => l.listeCombine).First();
+                    int nbPair = 0;
+                    int nbPair2 = 0;
+                    foreach (char item in listeCombi1)
+                    {
+                        if (item == ',')
+                            nbPair++;
+                    }
+                    foreach (char item in listeCombi2)
+                    {
+                        if (item == ',')
+                            nbPair2++;
+                    }
+                    if (nbPair != nbPair2)
+                        MessageBox.Show(nbPair > nbPair2 ? txtNomJ1.Text : txtNomJ2.Text);
+                    else
+                        MessageBox.Show("Le match est nul");
+                }
             }
         }
 
@@ -545,7 +591,7 @@ namespace JeuDeMemo
                         _lstChoixSysteme.Add(_btn2);
                     }
                 }
-                
+
             }
             JeuMemoire();
         }
@@ -579,9 +625,9 @@ namespace JeuDeMemo
         }
         private void SonTournerCarte(int idCarte)
         {
-            if(idCarte == 1)
+            if (idCarte == 1)
                 _player.Open(new Uri("Sounds/card-flip.wav", UriKind.Relative));
-            else if(idCarte == 30 || idCarte == 31)
+            else if (idCarte == 30 || idCarte == 31)
                 _player.Open(new Uri("Sounds/evil-laugh.mp3", UriKind.Relative));
             else if (idCarte == 34)
                 _player.Open(new Uri("Sounds/joker.wav", UriKind.Relative));
@@ -596,10 +642,10 @@ namespace JeuDeMemo
         private void ConfirmerButton_Click(object sender, RoutedEventArgs e)
         {
             InputBox.Visibility = System.Windows.Visibility.Collapsed;
-            
+
             _prenomJ1 = txtJ1Prenom.Text;
             _nomJ1 = txtJ1Nom.Text;
-            if(!_bContreSysteme)
+            if (!_bContreSysteme)
             {
                 txtInputJ2.Visibility = Visibility.Visible;
                 txtJ2Nom.Visibility = Visibility.Visible;
