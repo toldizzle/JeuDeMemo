@@ -106,13 +106,11 @@ namespace JeuDeMemo
             _premierChoix = 0;
             _deuxiemeChoix = 0;
             DetectionFinDeJeu();
-            if (!_bFinDePartie)
+            if (_bFinDePartie)
             {
-                ChangementTour();
-            }
-            //Fin de partie
-            else
-            {
+
+                //Fin de partie
+
                 SonTournerCarte(2);
                 Jeu.IsEnabled = false;
                 ////Test de BD
@@ -127,8 +125,12 @@ namespace JeuDeMemo
                     combinaison2 += _lstChoixSysteme[i] + ",";
                 }
                 Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
-                Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1 };
-                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2 };
+                Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count()};
+                context.Utilisateur.AddOrUpdate(utilisateur1);
+                context.SaveChanges();
+                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() +1};
+                context.Utilisateur.AddOrUpdate(utilisateur2);
+                context.SaveChanges();
                 Etat etat;
                 Etat etat2;
                 //État
@@ -148,15 +150,15 @@ namespace JeuDeMemo
                     etat2 = new Etat { nomEtat = "J2Nul", idEtat = 3 };
                 }
                 context.Partie.Add(partie);
-                context.Utilisateur.AddOrUpdate(utilisateur1);
-                context.Utilisateur.AddOrUpdate(utilisateur2);
                 context.Etat.AddOrUpdate(etat);
-                Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser };
-                Jouer jouer2 = new Jouer { listeCombine = combinaison2, idEtat = etat2.idEtat, idPartie = partie.idPartie, idUser = utilisateur2.idUser };
+                context.Etat.AddOrUpdate(etat2);
+                Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser, Etat = etat, Partie=partie, Utilisateur = utilisateur1 };
+                Jouer jouer2 = new Jouer { listeCombine = combinaison2, idEtat = etat2.idEtat, idPartie = partie.idPartie, idUser = utilisateur2.idUser, Etat = etat2, Partie = partie, Utilisateur = utilisateur2 };
                 context.Jouer.Add(jouer);
+                context.Jouer.Add(jouer2);
                 context.SaveChanges();
                 var query = context.Jouer.Where(u => u.idUser == utilisateur1.idUser).Select(z => z.idEtat).First();
-                
+
                 if (query == 1)
                     MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? txtNomJ1.Text : txtNomJ2.Text) + "!");
                 //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur1.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur1.nomUser)) + "!");
@@ -377,7 +379,7 @@ namespace JeuDeMemo
                         {
                             Tag = _lstImages[iTag],
                             Name = "btn" + sNom,
-                            Background = RecevoirCarteDefaut(),
+                            Background = RecevoirInfoBouton(_lstImages[iTag]),
                             Focusable = false
                         };
 
