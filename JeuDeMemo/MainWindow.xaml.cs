@@ -127,10 +127,8 @@ namespace JeuDeMemo
                 Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
                 Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count()};
                 context.Utilisateur.AddOrUpdate(utilisateur1);
-                context.SaveChanges();
                 Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() +1};
                 context.Utilisateur.AddOrUpdate(utilisateur2);
-                context.SaveChanges();
                 Etat etat;
                 Etat etat2;
                 //État
@@ -379,7 +377,7 @@ namespace JeuDeMemo
                         {
                             Tag = _lstImages[iTag],
                             Name = "btn" + sNom,
-                            Background = RecevoirInfoBouton(_lstImages[iTag]),
+                            Background = RecevoirCarteDefaut(),
                             Focusable = false
                         };
 
