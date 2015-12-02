@@ -22,7 +22,7 @@ namespace JeuDeMemo
         public int idPartie { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(1000)]
         public string listeCombine { get; set; }
 
         public virtual Etat Etat { get; set; }
