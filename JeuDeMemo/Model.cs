@@ -1,10 +1,8 @@
 namespace JeuDeMemo
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using System.Data.Entity.Validation;
+    using System.Linq;
 
     public partial class Model : DbContext
     {
@@ -55,6 +53,7 @@ namespace JeuDeMemo
                 .WithRequired(e => e.Utilisateur)
                 .WillCascadeOnDelete(false);
         }
+
         public override int SaveChanges()
         {
             try
@@ -79,5 +78,4 @@ namespace JeuDeMemo
             }
         }
     }
-
 }

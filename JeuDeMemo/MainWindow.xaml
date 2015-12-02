@@ -8,72 +8,71 @@
         Title="Jeu de mémoire" Height="723.593" Width="590.811" ResizeMode="NoResize" Icon="Images/Cartes/HLion.png" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,4,-4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0*" />
         </Grid.ColumnDefinitions>
         <Grid HorizontalAlignment="Left" Height="138" Margin="10,10,0,0" VerticalAlignment="Top" Width="299" Background="#00000000" Name="Options">
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="0,-2,0,0" VerticalAlignment="Top" Width="299"/>
-            <Label x:Name="label" Content="Format de Grille:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label1" Content="Nombre de joueurs:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label2" Content="Thème:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label3" Content="Débute la partie:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <CheckBox x:Name="chk8x8" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20" Checked="chk8x8_Checked"/>
-            <CheckBox x:Name="chk9x9" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438" Checked="chk9x9_Checked"/>
-            <CheckBox x:Name="chkJoueur1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur1_Checked"/>
-            <CheckBox x:Name="chkJoueur2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur2_Checked"/>
-            <CheckBox x:Name="chkFruits" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5"/>
-            <CheckBox x:Name="chkVoitures" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438" Checked="chkVoitures_Checked"/>
-            <CheckBox x:Name="chkDebut1" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5" Checked="chkDebut1_Checked"/>
-            <CheckBox x:Name="chkDebut2" Content="" HorizontalAlignment="Left" Margin="247,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438" Checked="chkDebut2_Checked"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="0,-2,0,0" VerticalAlignment="Top" Width="299" />
+            <Label x:Name="label" Content="Format de Grille:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label1" Content="Nombre de joueurs:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label2" Content="Thème:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label3" Content="Débute la partie:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <CheckBox x:Name="chk8x8" Content="" HorizontalAlignment="Left" Margin="171,15,0,0" VerticalAlignment="Top" Width="20" Checked="chk8x8_Checked" />
+            <CheckBox x:Name="chk9x9" Content="" HorizontalAlignment="Left" Margin="247,15,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="4.55,0.438" Checked="chk9x9_Checked" />
+            <CheckBox x:Name="chkJoueur1" Content="" HorizontalAlignment="Left" Margin="171,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur1_Checked" />
+            <CheckBox x:Name="chkJoueur2" Content="" HorizontalAlignment="Left" Margin="247,43,0,0" VerticalAlignment="Top" Width="20" Checked="chkJoueur2_Checked" />
+            <CheckBox x:Name="chkFruits" Content="" HorizontalAlignment="Left" Margin="171,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5" />
+            <CheckBox x:Name="chkVoitures" Content="" HorizontalAlignment="Left" Margin="247,73,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438" Checked="chkVoitures_Checked" />
+            <CheckBox x:Name="chkDebut1" Content="" HorizontalAlignment="Left" Margin="171,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,0.5" Checked="chkDebut1_Checked" />
+            <CheckBox x:Name="chkDebut2" Content="" HorizontalAlignment="Left" Margin="247,104,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.4,0.438" Checked="chkDebut2_Checked" />
 
-            <Label x:Name="label4" Content="8x8" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label4_Copy" Content="9x9" HorizontalAlignment="Left" Margin="206,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.355,0.538" FontFamily="Narkisim"/>
-            <Label x:Name="label4_Copy1" Content="1" HorizontalAlignment="Left" Margin="135,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label4_Copy2" Content="2" HorizontalAlignment="Left" Margin="206,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label4_Copy3" Content="fruits" HorizontalAlignment="Left" Margin="123,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="label4_Copy4" Content="voitures" HorizontalAlignment="Left" Margin="194,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="lblJ1" Content="joueur1" HorizontalAlignment="Left" Margin="116,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
-            <Label x:Name="lblJ2" Content="joueur2" HorizontalAlignment="Left" Margin="196,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim"/>
+            <Label x:Name="label4" Content="8x8" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label4_Copy" Content="9x9" HorizontalAlignment="Left" Margin="206,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.355,0.538" FontFamily="Narkisim" />
+            <Label x:Name="label4_Copy1" Content="1" HorizontalAlignment="Left" Margin="135,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label4_Copy2" Content="2" HorizontalAlignment="Left" Margin="206,36,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label4_Copy3" Content="fruits" HorizontalAlignment="Left" Margin="123,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="label4_Copy4" Content="voitures" HorizontalAlignment="Left" Margin="194,67,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="lblJ1" Content="joueur1" HorizontalAlignment="Left" Margin="116,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
+            <Label x:Name="lblJ2" Content="joueur2" HorizontalAlignment="Left" Margin="196,98,0,0" VerticalAlignment="Top" FontFamily="Narkisim" />
         </Grid>
         <Grid HorizontalAlignment="Left" Height="91" Margin="328,10,0,0" VerticalAlignment="Top" Width="241">
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="92" VerticalAlignment="Top" Width="241" Margin="0,0,0,-32">
             </Border>
-            <TextBox x:Name="txtNomJ1" TextWrapping="Wrap" Text="Joueur 1" Margin="16,27,122,38" IsReadOnly="True"/>
-            <TextBox x:Name="txtNomJ2" TextWrapping="Wrap" Text="Joueur 2" Margin="124,27,13,38" IsReadOnly="True"/>
-            <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667"/>
-            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="38,59,142,12" FontFamily="Narkisim"/>
-            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="146,59,34,12" FontFamily="Narkisim"/>
+            <TextBox x:Name="txtNomJ1" TextWrapping="Wrap" Text="Joueur 1" Margin="16,27,122,38" IsReadOnly="True" />
+            <TextBox x:Name="txtNomJ2" TextWrapping="Wrap" Text="Joueur 2" Margin="124,27,13,38" IsReadOnly="True" />
+            <Label x:Name="label5" Content="Score" HorizontalAlignment="Left" Margin="100,1,0,0" VerticalAlignment="Top" FontFamily="Narkisim" FontSize="14.667" />
+            <TextBox x:Name="txtPointJ1" TextWrapping="Wrap" Margin="38,59,142,12" FontFamily="Narkisim" />
+            <TextBox x:Name="txtPointJ2" TextWrapping="Wrap" Margin="146,59,34,12" FontFamily="Narkisim" />
         </Grid>
         <Grid HorizontalAlignment="Left" Height="503" Margin="10,176,0,0" VerticalAlignment="Top" Width="571">
 
-            <Label HorizontalContentAlignment="Center" x:Name="label6" Content="Grille de jeu&#xD;&#xA;" HorizontalAlignment="Left" Margin="-10,10,-59,0" VerticalAlignment="Top" Width="585"/>
+            <Label HorizontalContentAlignment="Center" x:Name="label6" Content="Grille de jeu&#xD;&#xA;" HorizontalAlignment="Left" Margin="-10,10,-59,0" VerticalAlignment="Top" Width="585" />
         </Grid>
-        <UniformGrid Name="Jeu" Margin="0,212,0,0"/>
-        <Button x:Name="btnDemarrer" Content="Démarrer" HorizontalAlignment="Left" Margin="328,126,0,0" VerticalAlignment="Top" Width="75" Click="btnDemarrer_Click" Height="22"/>
-        <Button x:Name="btnRecommencer" Content="Recommencer" HorizontalAlignment="Left" Margin="483,126,0,0" VerticalAlignment="Top" Width="86" Click="btnRecommencer_Click" IsEnabled="False" Height="22"/>
-        <Label x:Name="lblEtat" Content="" HorizontalAlignment="Left" Margin="0,153,0,0" VerticalAlignment="Top" Width="581" HorizontalContentAlignment="Center"/>
-       
+        <UniformGrid Name="Jeu" Margin="0,212,0,0" />
+        <Button x:Name="btnDemarrer" Content="Démarrer" HorizontalAlignment="Left" Margin="328,126,0,0" VerticalAlignment="Top" Width="75" Click="btnDemarrer_Click" Height="22" />
+        <Button x:Name="btnRecommencer" Content="Recommencer" HorizontalAlignment="Left" Margin="483,126,0,0" VerticalAlignment="Top" Width="86" Click="btnRecommencer_Click" IsEnabled="False" Height="22" />
+        <Label x:Name="lblEtat" Content="" HorizontalAlignment="Left" Margin="0,153,0,0" VerticalAlignment="Top" Width="581" HorizontalContentAlignment="Center" />
+
         <Grid x:Name="InputBox" Visibility="Collapsed">
-            <Grid Background="Black" Opacity="0.5"/>
+            <Grid Background="Black" Opacity="0.5" />
             <Border
             MinWidth="350"
-            Background="White" 
-            BorderBrush="Black" 
-            BorderThickness="1" 
-            HorizontalAlignment="Center" 
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="1"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center">
                 <StackPanel>
-                    <TextBlock Margin="5" Text="Joueur 1:" FontWeight="Bold" FontFamily="Narkisim"/>
-                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Nom" Text="Nom"/>
-                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Prenom" Text="Prenom"/>
-                    <TextBlock Margin="5" Text="Joueur 2:" FontWeight="Bold" FontFamily="Narkisim" Visibility="Hidden" Name="txtInputJ2"/>
-                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Nom" Text="Nom" Visibility="Hidden"/>
-                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Prenom" Text="Prenom" Visibility="Hidden"/>
+                    <TextBlock Margin="5" Text="Joueur 1:" FontWeight="Bold" FontFamily="Narkisim" />
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Nom" Text="Nom" />
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Prenom" Text="Prenom" />
+                    <TextBlock Margin="5" Text="Joueur 2:" FontWeight="Bold" FontFamily="Narkisim" Visibility="Hidden" Name="txtInputJ2" />
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Nom" Text="Nom" Visibility="Hidden" />
+                    <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Prenom" Text="Prenom" Visibility="Hidden" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="Confirmer" Margin="5" Content="Confirmer" Background="{x:Null}" Click="ConfirmerButton_Click"/>
+                        <Button x:Name="Confirmer" Margin="5" Content="Confirmer" Background="{x:Null}" Click="ConfirmerButton_Click" />
                     </StackPanel>
                 </StackPanel>
-                
             </Border>
         </Grid>
     </Grid>
