@@ -364,6 +364,20 @@ namespace JeuDeMemo
         {
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
+                //Tour de jeu
+                if (chkJoueur1.IsChecked == true)
+                    _bContreSysteme = true;
+                else
+                    _bContreSysteme = false;
+                if (chkDebut1.IsChecked == true)
+                    _bTourJ1 = true;
+                else if (chkJoueur2.IsChecked == true && _bContreSysteme == false)
+                    _bTourJ2 = true;
+                else
+                {
+                    _bTourSysteme = true;
+                    ChoixOrdinateur();
+                }
                 //Boite pour les noms
                 InputBox.Visibility = System.Windows.Visibility.Visible;
                 if (!_bContreSysteme) // Joueur 2
@@ -428,20 +442,7 @@ namespace JeuDeMemo
                         iTag++;
                     }
                 }
-                //Tour de jeu
-                if (chkJoueur1.IsChecked == true)
-                    _bContreSysteme = true;
-                else
-                    _bContreSysteme = false;
-                if (chkDebut1.IsChecked == true)
-                    _bTourJ1 = true;
-                else if (chkJoueur2.IsChecked == true && _bContreSysteme == false)
-                    _bTourJ2 = true;
-                else
-                {
-                    _bTourSysteme = true;
-                    ChoixOrdinateur();
-                }
+               
             }
             else
                 MessageBox.Show("Vous n'avez pas rempli la grille d'option.");
