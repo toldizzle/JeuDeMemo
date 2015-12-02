@@ -114,12 +114,12 @@ namespace JeuDeMemo
                 SonTournerCarte(2);
                 Jeu.IsEnabled = false;
                 ////Test de BD
-                string combinaison1 = "";
+                string combinaison1 = "b";
                 for (int i = 0; i < _lstChoixJoueur1.Count; i++)
                 {
                     combinaison1 += _lstChoixJoueur1[i] + ",";
                 }
-                string combinaison2 = "";
+                string combinaison2 = "b";
                 for (int i = 0; i < _lstChoixSysteme.Count; i++)
                 {
                     combinaison2 += _lstChoixSysteme[i] + ",";
@@ -161,7 +161,7 @@ namespace JeuDeMemo
                     MessageBox.Show("Le vainqueur est: " + (_pointageJ1 > _pointageJ2 ? txtNomJ1.Text : txtNomJ2.Text) + "!");
                 //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur1.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur1.nomUser)) + "!");
                 else if (query == 2)
-                    //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur2.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur2.nomUser)) + "!");
+                //MessageBox.Show("Le vainqueur est: " + (context.Utilisateur.Select(u => u.prenomUser == utilisateur2.prenomUser)) + (context.Utilisateur.Select(u => u.nomUser == utilisateur2.nomUser)) + "!");
                     MessageBox.Show("Le vainqueur est: " + (_lstChoixJoueur1.Count < _lstChoixSysteme.Count ? txtNomJ1.Text : txtNomJ2.Text) + "!");
                 else if (query == 3)
                 {
@@ -329,9 +329,18 @@ namespace JeuDeMemo
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
 
-            InputBox.Visibility = System.Windows.Visibility.Visible;
+            
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
+                //Boite pour les noms
+                InputBox.Visibility = System.Windows.Visibility.Visible;
+                if(!_bContreSysteme) // Joueur 2
+                {
+                    txtInputJ2.Visibility = Visibility.Visible;
+                    txtJ2Nom.Visibility = Visibility.Visible;
+                    txtJ2Prenom.Visibility = Visibility.Visible;
+                }
+                
                 btnRecommencer.IsEnabled = true;
                 Options.IsEnabled = false;
                 btnDemarrer.IsEnabled = false;
@@ -644,21 +653,19 @@ namespace JeuDeMemo
 
             _prenomJ1 = txtJ1Prenom.Text;
             _nomJ1 = txtJ1Nom.Text;
+            txtNomJ1.Text = _prenomJ1 + " " + _nomJ1;
+            
             if (!_bContreSysteme)
             {
-                txtInputJ2.Visibility = Visibility.Visible;
-                txtJ2Nom.Visibility = Visibility.Visible;
-                txtJ2Prenom.Visibility = Visibility.Visible;
                 _nomJ2 = txtJ2Nom.Text;
                 _prenomJ2 = txtJ2Prenom.Text;
+                txtNomJ2.Text = _prenomJ2 + " " + _nomJ2;
             }
             else
             {
                 _nomJ2 = "Système";
                 _prenomJ2 = "Système";
             }
-            //// Clear InputBox.
-            //txtJ1InputNom.Text = String.Empty;
         }
     }
 }

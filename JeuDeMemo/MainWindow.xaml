@@ -63,10 +63,10 @@
             HorizontalAlignment="Center" 
             VerticalAlignment="Center">
                 <StackPanel>
-                    <TextBlock Margin="5" Text="Joueur 1:" FontWeight="Bold" FontFamily="Cambria"/>
+                    <TextBlock Margin="5" Text="Joueur 1:" FontWeight="Bold" FontFamily="Narkisim"/>
                     <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Nom" Text="Nom"/>
                     <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ1Prenom" Text="Prenom"/>
-                    <TextBlock Margin="5" Text="Joueur 2:" FontWeight="Bold" FontFamily="Cambria" Visibility="Hidden" Name="txtInputJ2"/>
+                    <TextBlock Margin="5" Text="Joueur 2:" FontWeight="Bold" FontFamily="Narkisim" Visibility="Hidden" Name="txtInputJ2"/>
                     <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Nom" Text="Nom" Visibility="Hidden"/>
                     <TextBox MinWidth="100" VerticalAlignment="Center" x:Name="txtJ2Prenom" Text="Prenom" Visibility="Hidden"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
