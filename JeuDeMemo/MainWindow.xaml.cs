@@ -51,6 +51,7 @@ namespace JeuDeMemo
         }
         public async void JeuMemoire()
         {
+
             txtPointJ1.Text = _pointageJ1.ToString();
             txtPointJ2.Text = _pointageJ2.ToString();
             //Match des cartes (empêche l'erreur de 2 cartes mélanges joker ou unique)
@@ -113,12 +114,12 @@ namespace JeuDeMemo
                 SonTournerCarte(2);
                 Jeu.IsEnabled = false;
                 ////Test de BD
-                string combinaison1 = " ";
+                string combinaison1 = "";
                 for (int i = 0; i < _lstChoixJoueur1.Count; i++)
                 {
                     combinaison1 += _lstChoixJoueur1[i] + ",";
                 }
-                string combinaison2 = "b";
+                string combinaison2 = "";
                 for (int i = 0; i < _lstChoixSysteme.Count; i++)
                 {
                     combinaison2 += _lstChoixSysteme[i] + ",";
@@ -126,7 +127,7 @@ namespace JeuDeMemo
                 Partie partie = new Partie { dateHeurePartie = DateTime.Now.ToString(), idPartie = context.Partie.Count() };
                 Utilisateur utilisateur1 = new Utilisateur { nomUser = _nomJ1, prenomUser = _prenomJ1, idUser = context.Utilisateur.Count()};
                 context.Utilisateur.AddOrUpdate(utilisateur1);
-                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count()+1};
+                Utilisateur utilisateur2 = new Utilisateur { nomUser = _nomJ2, prenomUser = _prenomJ2, idUser = context.Utilisateur.Count() +1};
                 context.Utilisateur.AddOrUpdate(utilisateur2);
                 Etat etat;
                 Etat etat2;
@@ -144,19 +145,15 @@ namespace JeuDeMemo
                 else
                 {
                     etat = new Etat { nomEtat = "J1Nul", idEtat = 3 };
-                    etat2 = new Etat { nomEtat = "J2Nul", idEtat = 3};
+                    etat2 = new Etat { nomEtat = "J2Nul", idEtat = 3 };
                 }
-                
+                context.Partie.Add(partie);
+                context.Etat.AddOrUpdate(etat);
+                context.Etat.AddOrUpdate(etat2);
                 Jouer jouer = new Jouer { listeCombine = combinaison1, idEtat = etat.idEtat, idPartie = partie.idPartie, idUser = utilisateur1.idUser, Etat = etat, Partie=partie, Utilisateur = utilisateur1 };
                 Jouer jouer2 = new Jouer { listeCombine = combinaison2, idEtat = etat2.idEtat, idPartie = partie.idPartie, idUser = utilisateur2.idUser, Etat = etat2, Partie = partie, Utilisateur = utilisateur2 };
-                
-                etat.Jouer.Add(jouer);
-                etat2.Jouer.Add(jouer2);
                 context.Jouer.Add(jouer);
                 context.Jouer.Add(jouer2);
-                context.Etat.Add(etat);
-                context.Etat.Add(etat2);
-                context.Partie.Add(partie);
                 context.SaveChanges();
                 var query = context.Jouer.Where(u => u.idUser == utilisateur1.idUser).Select(z => z.idEtat).First();
 
@@ -331,15 +328,14 @@ namespace JeuDeMemo
 
         private void btnDemarrer_Click(object sender, RoutedEventArgs e)
         {
-            
 
+            InputBox.Visibility = System.Windows.Visibility.Visible;
             if ((chk8x8.IsChecked == true || chk9x9.IsChecked == true) && (chkDebut1.IsChecked == true || chkDebut2.IsChecked == true) && (chkFruits.IsChecked == true || chkVoitures.IsChecked == true) && (chkJoueur1.IsChecked == true || chkJoueur2.IsChecked == true))
             {
                 btnRecommencer.IsEnabled = true;
                 Options.IsEnabled = false;
                 btnDemarrer.IsEnabled = false;
-                InputBox.Visibility = System.Windows.Visibility.Visible;
-               
+
                 if (chk8x8.IsChecked == true)
                     _bGrandeur = 8;
                 else
@@ -380,7 +376,7 @@ namespace JeuDeMemo
                         Button button = new Button()
                         {
                             Tag = _lstImages[iTag],
-                            Name = "b" + sNom,
+                            Name = "btn" + sNom,
                             Background = RecevoirCarteDefaut(),
                             Focusable = false
                         };
@@ -648,7 +644,6 @@ namespace JeuDeMemo
 
             _prenomJ1 = txtJ1Prenom.Text;
             _nomJ1 = txtJ1Nom.Text;
-            
             if (!_bContreSysteme)
             {
                 txtInputJ2.Visibility = Visibility.Visible;
@@ -662,8 +657,6 @@ namespace JeuDeMemo
                 _nomJ2 = "Système";
                 _prenomJ2 = "Système";
             }
-            txtNomJ1.Text = _prenomJ1 + " " + _nomJ1;
-            txtNomJ2.Text = _prenomJ2 + " " + _nomJ2;
             //// Clear InputBox.
             //txtJ1InputNom.Text = String.Empty;
         }
